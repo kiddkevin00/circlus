@@ -4,7 +4,7 @@ How to Run the App on iOS or Android
 The following steps assume that you are developing on Mac.
 
 ## Common setup
-  - Clone this repo: `git clone https://github.com/kiddkevin00/spiritual-guide.git`.
+  - Clone this repo: `git clone https://github.com/kiddkevin00/circlus.git`.
   - Install Xcode and update to the latest version.
   - Download and install [Android Studio](https://developer.android.com/studio/index.html).
 

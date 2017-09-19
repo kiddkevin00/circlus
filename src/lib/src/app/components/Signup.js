@@ -1,4 +1,4 @@
-import Events from './Events';
+import Deals from './Deals';
 import Login from './Login';
 import { firebaseAuth } from '../proxies/FirebaseProxy';
 import {
@@ -122,7 +122,7 @@ class Signup extends Component {
       userInfo.sendEmailVerification();
 
       this.props.navigator.push({
-        component: Events,
+        component: Deals,
         passProps: { userInfo },
       });
 
@@ -165,7 +165,7 @@ class Signup extends Component {
       const userInfo = await firebaseAuth.signInAnonymously();
 
       this.props.navigator.push({
-        component: Events,
+        component: Deals,
         passProps: { userInfo },
       });
 
@@ -209,7 +209,7 @@ class Signup extends Component {
     return (
       <View style={ styles.container }>
         <View style={ styles.main }>
-          <Text style={ styles.title }>NYCorner</Text>
+          <Text style={ styles.title }>Circlus</Text>
           <TextInput
             style={ styles.formInput }
             value={ this.state.formFullName }

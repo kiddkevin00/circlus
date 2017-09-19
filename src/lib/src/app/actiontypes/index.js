@@ -1,12 +1,10 @@
 import authActionTypes from '../actiontypes/auth';
 import loginActionTypes from '../actiontypes/login';
-import landingActionTypes from '../actiontypes/landing';
 
 
 const allActionTypesPerSection = {
   AUTH: authActionTypes,
   LOGIN: loginActionTypes,
-  LANDING: landingActionTypes,
 };
 
 namespaceActionTypesPerSection(allActionTypesPerSection);

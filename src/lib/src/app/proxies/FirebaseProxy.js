@@ -2,12 +2,12 @@ import * as firebaseProxy from 'firebase';
 
 
 const config = {
-  apiKey: 'AIzaSyAre2dhv3bh1EUve7mTCmqB2jaEXo5hg8s',
-  authDomain: 'spiritual-guide-476dd.firebaseapp.com',
-  databaseURL: 'https://spiritual-guide-476dd.firebaseio.com',
-  projectId: 'spiritual-guide-476dd',
-  storageBucket: 'spiritual-guide-476dd.appspot.com',
-  messagingSenderId: '284674125062',
+  apiKey: 'AIzaSyDCi8u5pILtpGdR8KBjzFKWDrD7zA1zuyo',
+  authDomain: 'circlus-76a2a.firebaseapp.com',
+  databaseURL: 'https://circlus-76a2a.firebaseio.com',
+  projectId: 'circlus-76a2a',
+  storageBucket: 'circlus-76a2a.appspot.com',
+  messagingSenderId: '975180261499',
 };
 
 firebaseProxy.initializeApp(config);

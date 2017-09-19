@@ -28,10 +28,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
-class Events extends Component {
+class Deals extends Component {
 
   static propTypes = {
-    events: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    //deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -43,10 +43,10 @@ class Events extends Component {
         <Header style={ { backgroundColor: '#f96332' } }>
           <Left />
           <Body style={ { flexGrow: 3 } }>
-            <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Local Detour</Title>
+            <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Miss Korea</Title>
           </Body>
           <Right>
-            <Button transparent onPress={ this._gotoMapView }>
+            <Button transparent onPress={ () => {} }>
               <Icon style={ { color: 'white' } } name="map" />
             </Button>
           </Right>
@@ -60,4 +60,4 @@ class Events extends Component {
 
 }
 
-export default Events;
+export { Deals as default };

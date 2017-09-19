@@ -1,12 +1,12 @@
-import Events from '../components/Events';
+import Deals from '../components/Deals';
 import actionTypes from '../actiontypes/';
 import { firebaseAuth, firebaseAuthProviders } from '../proxies/FirebaseProxy';
-import {
-  AccessToken,
-} from 'react-native-fbsdk';
+//import {
+//  AccessToken,
+//} from 'react-native-fbsdk';
 
 
-const landingActionCreator = {
+const loginActionCreator = {
   facebookPostLogin(navigator) {
     return async (dispatch/*, getState*/) => {
       dispatch({
@@ -14,7 +14,7 @@ const landingActionCreator = {
       });
 
       try {
-        const { accessToken } = await AccessToken.getCurrentAccessToken();
+        const { accessToken } = { accessToken: {} }//await AccessToken.getCurrentAccessToken();
         const credential = firebaseAuthProviders.FacebookAuthProvider.credential(accessToken);
         const userInfo = await firebaseAuth.signInWithCredential(credential);
 
@@ -36,7 +36,7 @@ const landingActionCreator = {
         });
 
         navigator.push({
-          component: Events,
+          component: Deals,
         });
       } catch (err) {
         global.alert(`Facebook login with Firebase failed: ${err}`);
@@ -45,4 +45,4 @@ const landingActionCreator = {
   },
 };
 
-export { landingActionCreator as default };
+export { loginActionCreator as default };

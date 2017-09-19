@@ -1,16 +1,19 @@
 import actionTypes from '../actiontypes/';
 
 
-const initialUserState = {
+const initialUserInfoState = {
   uid: undefined,
   displayName: undefined,
   email: undefined,
   photoURL: undefined,
   isAnonymous: undefined,
+  phoneNumber: undefined,
+  emailVerified: undefined,
+  providerData: undefined,
 };
 const initialState = {
   isLoggedIn: false,
-  userInfo: initialUserState,
+  userInfo: initialUserInfoState,
 };
 
 function authReducer(state = initialState, action) {
@@ -22,7 +25,7 @@ function authReducer(state = initialState, action) {
       return {
         ...state,
         isLoggedIn: true,
-        userInfo: actionPayload.userInfo,
+        userInfo: { ...state.userInfo, ...actionPayload.userInfo },
       };
     default:
       return state;

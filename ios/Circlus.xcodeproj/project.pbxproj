@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -49,6 +48,7 @@
 		C9DDE98949B24776BA7E8D5C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3617E8AAB0BD402C9185E8AF /* Entypo.ttf */; };
 		D9E1F3B531BF4CCBA7A424A5 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68689F3B793B4341A47D671C /* Ionicons.ttf */; };
 		F6B2EDF634494A1196032995 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE07FB6D4A2242A5932D0B87 /* SimpleLineIcons.ttf */; };
+		35A6C8BC762E454583DE0FB5 /* Lily Script One.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B180F50FC4E45E58A409B41 /* Lily Script One.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -324,6 +324,7 @@
 		E3E390CD4BFA47EB86A265A5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		E6CACFE19EA646CD9E62B389 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		EE07FB6D4A2242A5932D0B87 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		5B180F50FC4E45E58A409B41 /* Lily Script One.ttf */ = {isa = PBXFileReference; name = "Lily Script One.ttf"; path = "../src/lib/static/assets/fonts/Lily Script One.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -522,6 +523,7 @@
 				1F860966286045F794055A43 /* rubicon-icon-font.ttf */,
 				EE07FB6D4A2242A5932D0B87 /* SimpleLineIcons.ttf */,
 				E6CACFE19EA646CD9E62B389 /* Zocial.ttf */,
+				5B180F50FC4E45E58A409B41 /* Lily Script One.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1037,6 +1039,7 @@
 				6F6FFD27F8354373BFBE47FC /* rubicon-icon-font.ttf in Resources */,
 				F6B2EDF634494A1196032995 /* SimpleLineIcons.ttf in Resources */,
 				1668FDF854C04CDFAC073C5A /* Zocial.ttf in Resources */,
+				35A6C8BC762E454583DE0FB5 /* Lily Script One.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

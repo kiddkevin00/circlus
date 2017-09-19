@@ -1,11 +1,14 @@
-import actionCreator from '../actioncreators/login';
-import Events from './Events';
+import Deals from './Deals';
+import DealDetail from './DealDetail';
 import Signup from './Signup';
+import actionCreator from '../actioncreators/login';
 import { firebaseAuth } from '../proxies/FirebaseProxy';
+//import {
+//  LoginButton as FacebookSignInButton,
+//} from 'react-native-fbsdk';
+import { firebaseConnect } from 'react-redux-firebase';
 import {
-  LoginButton as FacebookSignInButton,
-} from 'react-native-fbsdk';
-import {
+  Linking,
   ActivityIndicator,
   TouchableHighlight,
   TextInput,
@@ -14,8 +17,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 
 
 const styles = StyleSheet.create({
@@ -90,6 +95,7 @@ class Login extends Component {
 
   static propTypes = {
     dispatchFacebookPostLogin: PropTypes.func.isRequired,
+
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
@@ -99,6 +105,37 @@ class Login extends Component {
     isLoading: false,
     error: '',
   };
+
+  componentDidMount() {
+    Linking.addEventListener('url', this._handleOpenURL);
+  }
+
+  componentDidUpdate() {
+    if (!this.props.auth.isEmpty) {
+      this.props.navigator.replace({
+        component: Deals,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    //Linking.removeEventListener('url', this._handleOpenURL);
+  }
+
+  _handleOpenURL = (event) => {
+    const url = event.url.split('?');
+    const path = url[0];
+    const params = url[1] ? qs.parse(url[1]) : null;
+
+    if (path && params && params.deal) {
+      this.props.navigator.push({
+        component: DealDetail,
+        passProps: {
+          dealId: JSON.parse(params.deal),
+        },
+      });
+    }
+  }
 
   _handleLogin = async () => {
     this.setState({
@@ -110,7 +147,7 @@ class Login extends Component {
         .signInWithEmailAndPassword(this.state.formEmail, this.state.formPassword);
 
       this.props.navigator.push({
-        component: Events,
+        component: Deals,
         passProps: {
           userInfo: {
             uid: userInfo.uid,
@@ -165,10 +202,14 @@ class Login extends Component {
   }
 
   render() {
+    if (!this.props.auth.isLoaded) {
+      return null;
+    }
+
     return (
       <View style={ styles.container }>
         <View style={ styles.main }>
-          <Text style={ styles.title }>NYCorner</Text>
+          <Text style={ styles.title }>Circlus</Text>
           <TextInput
             style={ styles.formInput }
             value={ this.state.formEmail }
@@ -198,11 +239,13 @@ class Login extends Component {
           >
             <Text style={ styles.signupButtonText }>SIGN UP</Text>
           </TouchableHighlight>
+          {/*
           <FacebookSignInButton
             readPermissions={ ['public_profile', 'email', 'user_friends'] }
             onLoginFinished={ this._handleFbPostLogin }
             onLogoutFinished={ () => global.alert('Logout succeeded!') }
           />
+          */}
           <ActivityIndicator
             animating={ this.state.isLoading }
             color="#111"
@@ -222,7 +265,9 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    auth: state.firebase.auth,
+  };
 }
 function mapDispatchToProps(dispatch) {
   return {
@@ -232,4 +277,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default compose(
+  firebaseConnect([]),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);

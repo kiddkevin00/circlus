@@ -107,6 +107,16 @@ class Login extends Component {
   };
 
   componentDidMount() {
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) {
+          this._handleOpenURL({ url });
+        }
+      })
+      .catch((err) => {
+        console.log(`Something went wrong when getting launch URL - ${err}`);
+      });
+
     Linking.addEventListener('url', this._handleOpenURL);
   }
 

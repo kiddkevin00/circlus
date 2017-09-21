@@ -224,14 +224,14 @@ class Login extends Component {
           <TouchableHighlight
             style={ styles.loginButton }
             onPress={ this._handleLogin }
-            underlayColor="#f2f2f2"
+            underlayColor="#ffcc00"
           >
             <Text style={ styles.loginButtonText }>LOG IN</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={ styles.signupButton }
             onPress={ this._gotoSignup }
-            underlayColor="#ffcc00"
+            underlayColor="#f2f2f2"
           >
             <Text style={ styles.signupButtonText }>SIGN UP</Text>
           </TouchableHighlight>

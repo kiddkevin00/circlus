@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: 'white',
+    borderColor: 'orange',
     height: 45,
-    backgroundColor: 'white',
+    backgroundColor: 'orange',
   },
   loginButton: {
     justifyContent: 'center',
@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: 'orange',
+    borderColor: 'white',
     height: 45,
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
   },
   signupLaterButton: {
     justifyContent: 'center',
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontSize: 18,
-    color: 'white',
+    color: '#111',
   },
   signupButtonText: {
     fontSize: 18,
-    color: '#111',
+    color: 'white',
   },
   signupLaterButtonText: {
     fontSize: 18,
@@ -110,6 +110,14 @@ class Signup extends Component {
     error: '',
   };
 
+  componentDidUpdate() {
+    //if (!this.props.auth.isEmpty) {
+    //  this.props.navigator.replace({
+    //    component: Deals,
+    //  });
+    //}
+  }
+
   _handleSignup = async () => {
     this.setState({
       isLoading: true,
@@ -121,18 +129,18 @@ class Signup extends Component {
 
       userInfo.sendEmailVerification();
 
-      this.props.navigator.push({
+      this.props.navigator.replace({
         component: Deals,
         passProps: { userInfo },
       });
 
-      this.setState({
-        formFullName: '',
-        formEmail: '',
-        formPassword: '',
-        isLoading: false,
-        error: '',
-      });
+      //this.setState({
+      //  formFullName: '',
+      //  formEmail: '',
+      //  formPassword: '',
+      //  isLoading: false,
+      //  error: '',
+      //});
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -164,18 +172,18 @@ class Signup extends Component {
     try {
       const userInfo = await firebaseAuth.signInAnonymously();
 
-      this.props.navigator.push({
+      this.props.navigator.replace({
         component: Deals,
         passProps: { userInfo },
       });
 
-      this.setState({
-        formFullName: '',
-        formEmail: '',
-        formPassword: '',
-        isLoading: false,
-        error: '',
-      });
+      //this.setState({
+      //  formFullName: '',
+      //  formEmail: '',
+      //  formPassword: '',
+      //  isLoading: false,
+      //  error: '',
+      //});
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -194,7 +202,7 @@ class Signup extends Component {
   }
 
   _gotoLogin = () => {
-    this.props.navigator.push({
+    this.props.navigator.replace({
       component: Login,
     });
   }

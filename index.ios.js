@@ -1,4 +1,4 @@
-import Landing from './src/lib/src/app/components/Login';
+import Landing from './src/lib/src/app/components/Deals';
 import configureStore from './src/lib/src/app/store/';
 import {
   NavigatorIOS,

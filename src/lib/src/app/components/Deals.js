@@ -1,3 +1,4 @@
+import Signup from './Signup';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
   Container,
@@ -16,11 +17,7 @@ import {
   Icon,
 } from 'native-base';
 import {
-  Alert,
-  Share,
-  AsyncStorage,
-  Image,
-  Dimensions,
+  Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -37,17 +34,42 @@ class Deals extends Component {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
+  componentDidMount() {
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) {
+          this._handleOpenURL({ url });
+          //this.isAppOpenedByUrl = true;
+        }
+      })
+      .catch((err) => {
+        console.log(`Something went wrong when getting launch URL - ${err}`);
+      });
+
+    Linking.addEventListener('url', this._handleOpenURL);
+  }
+
+  componentWillUnmount() {
+    //Linking.removeEventListener('url', this._handleOpenURL);
+  }
+
+  _gotoSignup = () => {
+    this.props.navigator.push({
+      component: Signup,
+    });
+  }
+
   render() {
     return (
       <Container>
         <Header style={ { backgroundColor: '#f96332' } }>
           <Left />
           <Body style={ { flexGrow: 3 } }>
-            <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Local Detour</Title>
+            <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Circlus</Title>
           </Body>
           <Right>
-            <Button transparent onPress={ () => {} }>
-              <Icon style={ { color: 'white' } } name="map" />
+            <Button transparent onPress={ this._gotoSignup }>
+              <Icon style={ { color: 'white' } } name="log-in" />
             </Button>
           </Right>
         </Header>

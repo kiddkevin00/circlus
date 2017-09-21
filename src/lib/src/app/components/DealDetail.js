@@ -37,17 +37,25 @@ class Deals extends Component {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
+  _backToDealsList = () => {
+    this.props.navigator.pop();
+  }
+
   render() {
     return (
       <Container>
         <Header style={ { backgroundColor: '#f96332' } }>
-          <Left />
+          <Left>
+            <Button transparent onPress={ this._backToDealsList }>
+              <Icon style={ { color: 'white', fontSize: 32 } } name="arrow-back" />
+            </Button>
+          </Left>
           <Body style={ { flexGrow: 3 } }>
             <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Miss Korea</Title>
           </Body>
           <Right>
             <Button transparent onPress={ () => {} }>
-              <Icon style={ { color: 'white' } } name="map" />
+              <Icon style={ { color: 'white' } } name="share" />
             </Button>
           </Right>
         </Header>

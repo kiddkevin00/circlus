@@ -8,7 +8,6 @@ import { firebaseAuth } from '../proxies/FirebaseProxy';
 //} from 'react-native-fbsdk';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
-  Linking,
   ActivityIndicator,
   TouchableHighlight,
   TextInput,
@@ -62,9 +61,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: 'white',
+    borderColor: 'orange',
     height: 45,
-    backgroundColor: 'white',
+    backgroundColor: 'orange',
   },
   signupButton: {
     justifyContent: 'center',
@@ -73,9 +72,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: 'orange',
+    borderColor: 'white',
     height: 45,
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
   },
   footerText: {
     fontSize: 12,
@@ -83,11 +82,11 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontSize: 18,
-    color: '#111',
+    color: 'white',
   },
   signupButtonText: {
     fontSize: 18,
-    color: 'white',
+    color: '#111',
   },
 });
 
@@ -95,6 +94,7 @@ class Login extends Component {
 
   static propTypes = {
     dispatchFacebookPostLogin: PropTypes.func.isRequired,
+    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
@@ -106,30 +106,12 @@ class Login extends Component {
     error: '',
   };
 
-  componentDidMount() {
-    Linking.getInitialURL()
-      .then((url) => {
-        if (url) {
-          this._handleOpenURL({ url });
-        }
-      })
-      .catch((err) => {
-        console.log(`Something went wrong when getting launch URL - ${err}`);
-      });
-
-    Linking.addEventListener('url', this._handleOpenURL);
-  }
-
   componentDidUpdate() {
-    if (!this.props.auth.isEmpty) {
-      this.props.navigator.replace({
-        component: Deals,
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    //Linking.removeEventListener('url', this._handleOpenURL);
+    //if (!this.props.auth.isEmpty) {
+    //  this.props.navigator.replace({
+    //    component: Deals,
+    //  });
+    //}
   }
 
   _handleOpenURL = (event) => {
@@ -138,10 +120,14 @@ class Login extends Component {
     const params = url[1] ? qs.parse(url[1]) : null;
 
     if (path && params && params.deal) {
+      this.props.navigator.replace({
+        component: Deals,
+      });
+
       this.props.navigator.push({
         component: DealDetail,
         passProps: {
-          dealId: JSON.parse(params.deal),
+          dealId: params.deal,
         },
       });
     }
@@ -156,7 +142,7 @@ class Login extends Component {
       const userInfo = await firebaseAuth
         .signInWithEmailAndPassword(this.state.formEmail, this.state.formPassword);
 
-      this.props.navigator.push({
+      this.props.navigator.replace({
         component: Deals,
         passProps: {
           userInfo: {
@@ -166,12 +152,12 @@ class Login extends Component {
         },
       });
 
-      this.setState({
-        formEmail: '',
-        formPassword: '',
-        isLoading: false,
-        error: '',
-      });
+      //this.setState({
+      //  formEmail: '',
+      //  formPassword: '',
+      //  isLoading: false,
+      //  error: '',
+      //});
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -200,7 +186,7 @@ class Login extends Component {
   }
 
   _gotoSignup = () => {
-    this.props.navigator.push({
+    this.props.navigator.replace({
       component: Signup,
     });
   }

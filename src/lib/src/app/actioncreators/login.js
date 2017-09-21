@@ -35,7 +35,7 @@ const loginActionCreator = {
           type: actionTypes.LOGIN.FACEBOOK_LOGIN_SUCCEED,
         });
 
-        navigator.push({
+        navigator.replace({
           component: Deals,
         });
       } catch (err) {

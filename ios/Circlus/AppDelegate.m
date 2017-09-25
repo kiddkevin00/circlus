@@ -9,6 +9,8 @@
 
 #import "AppDelegate.h"
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -26,6 +28,13 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  
+  /*
+   * To post-process the results from actions that require you to switch to the native Facebook app or
+   * Safari, such as Facebook Login or Facebook Dialogs
+   */
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+    didFinishLaunchingWithOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
@@ -34,19 +43,35 @@
   [self.window makeKeyAndVisible];
   return YES;
 }
-
+  
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+    openURL:url
+    sourceApplication:sourceApplication
+    annotation:annotation];
+ 
+  [RCTLinkingManager application:application openURL:url
+    sourceApplication:sourceApplication annotation:annotation];
+  
+  // Add other custom logic here.
+  
+  return handled;
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
-    restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [RCTLinkingManager application:application
-    continueUserActivity:userActivity
-    restorationHandler:restorationHandler];
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+    openURL:url
+    options:options];
+  
+  [RCTLinkingManager application:application openURL:url options:options];
+  
+  // Add other custom logic here.
+  
+  return handled;
 }
 
 @end

@@ -1,9 +1,9 @@
 import Deals from '../components/Deals';
 import actionTypes from '../actiontypes/';
 import { firebaseAuth, firebaseAuthProviders } from '../proxies/FirebaseProxy';
-//import {
-//  AccessToken,
-//} from 'react-native-fbsdk';
+import {
+  AccessToken,
+} from 'react-native-fbsdk';
 
 
 const loginActionCreator = {
@@ -14,7 +14,7 @@ const loginActionCreator = {
       });
 
       try {
-        const { accessToken } = { accessToken: {} }//await AccessToken.getCurrentAccessToken();
+        const { accessToken } = await AccessToken.getCurrentAccessToken();
         const credential = firebaseAuthProviders.FacebookAuthProvider.credential(accessToken);
         const userInfo = await firebaseAuth.signInWithCredential(credential);
 
@@ -31,12 +31,12 @@ const loginActionCreator = {
           },
         });
 
-        dispatch({
-          type: actionTypes.LOGIN.FACEBOOK_LOGIN_SUCCEED,
-        });
-
         navigator.replace({
           component: Deals,
+        });
+
+        dispatch({
+          type: actionTypes.LOGIN.FACEBOOK_LOGIN_SUCCEED,
         });
       } catch (err) {
         global.alert(`Facebook login with Firebase failed: ${err}`);

@@ -3,9 +3,9 @@ import DealDetail from './DealDetail';
 import Signup from './Signup';
 import actionCreator from '../actioncreators/login';
 import { firebaseAuth } from '../proxies/FirebaseProxy';
-//import {
-//  LoginButton as FacebookSignInButton,
-//} from 'react-native-fbsdk';
+import {
+  LoginButton as FacebookSignInButton,
+} from 'react-native-fbsdk';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
   ActivityIndicator,
@@ -235,13 +235,11 @@ class Login extends Component {
           >
             <Text style={ styles.signupButtonText }>SIGN UP</Text>
           </TouchableHighlight>
-          {/*
           <FacebookSignInButton
             readPermissions={ ['public_profile', 'email', 'user_friends'] }
             onLoginFinished={ this._handleFbPostLogin }
             onLogoutFinished={ () => global.alert('Logout succeeded!') }
           />
-          */}
           <ActivityIndicator
             animating={ this.state.isLoading }
             color="#111"

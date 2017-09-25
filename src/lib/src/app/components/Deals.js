@@ -1,3 +1,4 @@
+import DealDetail from './DealDetail';
 import Signup from './Signup';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -23,6 +24,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 
 
 class Deals extends Component {
@@ -51,6 +53,25 @@ class Deals extends Component {
 
   componentWillUnmount() {
     //Linking.removeEventListener('url', this._handleOpenURL);
+  }
+
+  _handleOpenURL = (event) => {
+    const url = event.url.split('?');
+    const path = url[0];
+    const params = url[1] ? qs.parse(url[1]) : null;
+
+    if (path && params && params.deal) {
+      this.props.navigator.replace({
+        component: Deals,
+      });
+
+      this.props.navigator.push({
+        component: DealDetail,
+        passProps: {
+          dealId: params.deal,
+        },
+      });
+    }
   }
 
   _gotoSignup = () => {

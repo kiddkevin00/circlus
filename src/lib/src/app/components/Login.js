@@ -1,5 +1,4 @@
 import Deals from './Deals';
-import DealDetail from './DealDetail';
 import Signup from './Signup';
 import actionCreator from '../actioncreators/login';
 import { firebaseAuth } from '../proxies/FirebaseProxy';
@@ -19,7 +18,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import qs from 'qs';
 
 
 const styles = StyleSheet.create({
@@ -112,25 +110,6 @@ class Login extends Component {
     //    component: Deals,
     //  });
     //}
-  }
-
-  _handleOpenURL = (event) => {
-    const url = event.url.split('?');
-    const path = url[0];
-    const params = url[1] ? qs.parse(url[1]) : null;
-
-    if (path && params && params.deal) {
-      this.props.navigator.replace({
-        component: Deals,
-      });
-
-      this.props.navigator.push({
-        component: DealDetail,
-        passProps: {
-          dealId: params.deal,
-        },
-      });
-    }
   }
 
   _handleLogin = async () => {

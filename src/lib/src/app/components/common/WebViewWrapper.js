@@ -34,14 +34,14 @@ class WebViewWrapper extends Component {
 
     return (
       <Container>
-        <Header style={ { backgroundColor: '#f96332' } }>
+        <Header style={ { backgroundColor: '#3F5EFB' } }>
           <Left>
             <Button transparent onPress={ this._backToComponent }>
               <Icon style={ { color: 'white', fontSize: 32 } } name="arrow-back" />
             </Button>
           </Left>
           <Body style={ { flexGrow: 3 } }>
-            <Title style={ { color: 'white', fontFamily: 'Lily Script One', fontSize: 27 } }>Local Detour</Title>
+          <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>Circlus</Title>
           </Body>
           <Right />
         </Header>

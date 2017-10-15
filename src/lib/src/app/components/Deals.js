@@ -30,6 +30,7 @@ import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import stripe from 'tipsi-stripe';
 
 
 class Deals extends Component {
@@ -70,7 +71,34 @@ class Deals extends Component {
           </CardItem>
           <CardItem button onPress={ this._checkoutDealDetail.bind(this, deal) }>
             <Left>
-              <Button iconLeft transparent onPress={ () => Alert.alert('Success', 'The deal has been saved') }>
+              <Button iconLeft transparent onPress={ () => {
+                stripe.init({
+                  publishableKey: "pk_test_CbjF57VBeGxsFyB4pMSpK2Z",
+                });
+                const options = {
+                  smsAutofillDisabled: true,
+                  requiredBillingAddressFields: 'full',
+                  prefilledInformation: {
+                    billingAddress: {
+                      name: 'Gunilla Haugeh',
+                      line1: 'Canary Place',
+                      line2: '3',
+                      city: 'Macon',
+                      state: 'Georgia',
+                      country: 'US',
+                      postalCode: '31217',
+                    },
+                  },
+                  }
+
+                stripe.paymentRequestWithCardForm(options)
+                .then(response => {
+                  console.log('rrrr', response)
+                })
+                .catch(error => {
+                  console.log('rttttt', error)
+                });
+                } }>
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="bookmark" />
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Save</Text>
               </Button>

@@ -41,7 +41,7 @@ class WebViewWrapper extends Component {
             </Button>
           </Left>
           <Body style={ { flexGrow: 3 } }>
-          <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>Circlus</Title>
+            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
           <Right />
         </Header>

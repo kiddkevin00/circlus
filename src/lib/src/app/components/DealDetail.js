@@ -1,3 +1,4 @@
+import BillingSummary from './BillingSummary';
 import PhotosPreview from './PhotosPreview';
 import WebViewWrapper from './common/WebViewWrapper';
 import constants from '../constants/';
@@ -51,6 +52,13 @@ class DealDetail extends Component {
     isViewerShown: false,
     indexShown: 0,
   };
+
+  _gotoBillingSummary(discount) {
+    this.props.navigator.push({
+      component: BillingSummary,
+      passProps: { discount },
+    });
+  }
 
   _onPhotoSelect(indexShown) {
     this.props.navigator.push({
@@ -208,7 +216,7 @@ class DealDetail extends Component {
             </Button>
           </Left>
           <Body style={ { flexGrow: 3 } }>
-            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>Circlus</Title>
+            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
           <Right>
             <Button transparent onPress={ () => Alert.alert('Success', 'The deal has been saved') }>
@@ -216,10 +224,13 @@ class DealDetail extends Component {
             </Button>
           </Right>
         </Header>
-        <Content key="content" padder>
+        <Content padder>
           <Card>
             <CardItem cardBody>
-              <Image style={ { height: Dimensions.get('window').width - 25, width: '100%' } } source={ deal.heroPhoto ? { uri: deal.heroPhoto } : require('../../../static/assets/images/loading-indicator.gif') } />
+              <Image
+                style={ { height: Dimensions.get('window').width - 25, width: '100%' } }
+                source={ deal.heroPhoto ? { uri: deal.heroPhoto } : require('../../../static/assets/images/loading-indicator.gif') }
+              />
             </CardItem>
             <CardItem style={ { height: 70 } } bordered>
               <Body style={ { flexGrow: 2, justifyContent: 'center' } }>
@@ -256,7 +267,7 @@ class DealDetail extends Component {
               <Left>
                 <Icon style={ { fontSize: 25, color: 'red' } } name="pricetag" />
                 <Text>&nbsp;</Text>
-                <Text style={ { fontSize: 16, fontWeight: '500' } }>{ deal.discount }</Text>
+                <Text style={ { fontSize: 16, fontWeight: '500' } }>{ deal.discount.display }</Text>
               </Left>
             </CardItem>
             <CardItem bordered button onPress={ this._openWebPage.bind(this, deal.externalLink) }>
@@ -290,10 +301,10 @@ class DealDetail extends Component {
             <CardItem style={ { paddingTop: 0.1, paddingBottom: 0.1 } } />
           </Card>
         </Content>
-        <Footer key="footer">
+        <Footer>
           <FooterTab>
-            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ () => {} }>
-              <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Checkout Now</Text>
+            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._gotoBillingSummary.bind(this, deal.discount.value) }>
+              <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Checkout</Text>
             </Button>
           </FooterTab>
         </Footer>

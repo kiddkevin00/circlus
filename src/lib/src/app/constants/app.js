@@ -1,6 +1,6 @@
 export const SAMPLE_DEAL = {
   detail: 'This is a sample deal...',
-  discount: '50%',
+  discount: { display: '40% off for all your ordered', value: 40 },
   externalLink: 'https://goo.gl/idYcsR',
   heroPhoto: 'https://firebasestorage.googleapis.com/v0/b/circlus-76a2a.appspot.com/o/public%2FMiss%20Korea%2Fmiss-korea.jpg?alt=media&token=8782514c-7f66-4731-8e92-a40ccf4fe87e',
   name: 'Awesome Korean BBQ Deal',

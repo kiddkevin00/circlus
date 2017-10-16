@@ -58,6 +58,7 @@
 		C9DDE98949B24776BA7E8D5C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3617E8AAB0BD402C9185E8AF /* Entypo.ttf */; };
 		D9E1F3B531BF4CCBA7A424A5 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68689F3B793B4341A47D671C /* Ionicons.ttf */; };
 		F6B2EDF634494A1196032995 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE07FB6D4A2242A5932D0B87 /* SimpleLineIcons.ttf */; };
+		FA45431DC19C41558FEBA21A /* libRNCardIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1649C5BED474E0EAAAD614B /* libRNCardIO.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9350E0F11CE3B0920041D815;
 			remoteInfo = RCTFBSDK;
+		};
+		13909C131F8EA48400BC354E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCardIO;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -352,6 +360,8 @@
 		AB2038249C04474BB5A63BA7 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../src/lib/static/assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		ABA173BA78BD4AD19F485588 /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCardIO.xcodeproj; path = "../node_modules/react-native-awesome-card-io/ios/RNCardIO.xcodeproj"; sourceTree = "<group>"; };
+		C1649C5BED474E0EAAAD614B /* libRNCardIO.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCardIO.a; sourceTree = "<group>"; };
 		D1F3506B4FF4450BAD0F4A3D /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		D9936AFAA8324A168698E6D6 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		E3E390CD4BFA47EB86A265A5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -392,6 +402,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				4C012096BF874D80B2F72E83 /* libRCTFBSDK.a in Frameworks */,
 				9D8EE32D4F90424B92D2E8A0 /* libRNPhotoView.a in Frameworks */,
+				FA45431DC19C41558FEBA21A /* libRNCardIO.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +505,14 @@
 			isa = PBXGroup;
 			children = (
 				1379BD0D1F786BEA006E1B58 /* libRCTFBSDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		13909BF01F8EA48400BC354E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13909C141F8EA48400BC354E /* libRNCardIO.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -615,6 +634,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				6A609235D08443CEA9213D6E /* RCTFBSDK.xcodeproj */,
 				52E2652393B148C597D80781 /* RNPhotoView.xcodeproj */,
+				B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -850,6 +870,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 13909BF01F8EA48400BC354E /* Products */;
+					ProjectRef = B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */;
+				},
+				{
 					ProductGroup = 13EEA1B71F8541330050BFF7 /* Products */;
 					ProjectRef = 52E2652393B148C597D80781 /* RNPhotoView.xcodeproj */;
 				},
@@ -912,6 +936,13 @@
 			fileType = archive.ar;
 			path = libRCTFBSDK.a;
 			remoteRef = 1379BD0C1F786BEA006E1B58 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		13909C141F8EA48400BC354E /* libRNCardIO.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCardIO.a;
+			remoteRef = 13909C131F8EA48400BC354E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1255,6 +1286,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = CirclusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1283,6 +1315,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = CirclusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1318,6 +1351,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = Circlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1353,6 +1387,7 @@
 					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = Circlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1389,6 +1424,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = "Circlus-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1426,6 +1462,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
 				);
 				INFOPLIST_FILE = "Circlus-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

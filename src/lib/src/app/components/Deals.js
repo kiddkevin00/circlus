@@ -152,7 +152,7 @@ class Deals extends Component {
         <Header style={ { backgroundColor: '#3F5EFB' } }>
           <Left />
           <Body style={ { flexGrow: 3 } }>
-            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>Circlus</Title>
+            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
           <Right>
             <Button transparent onPress={ this._gotoSignup }>

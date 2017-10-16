@@ -217,7 +217,7 @@ class Signup extends Component {
     return (
       <View style={ styles.container }>
         <View style={ styles.main }>
-          <Text style={ styles.title }>Circlus</Text>
+          <Text style={ styles.title }>circlus</Text>
           <TextInput
             style={ styles.formInput }
             value={ this.state.formFullName }

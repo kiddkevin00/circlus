@@ -31,7 +31,7 @@ class BillingSummary extends Component {
   };
 
   static defaultProps = {
-    discount: 77, // TODO
+    discount: 30, // TODO
   };
 
   state = {
@@ -42,7 +42,7 @@ class BillingSummary extends Component {
   _checkout = () => {
     this.props.navigator.push({
       component: AddCard,
-      passProps: { totalAmount: this.state.billAmount * (1 - this.props.discount / 100) },
+      passProps: { totalAmount: this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0)) },
     });
   }
 
@@ -58,8 +58,8 @@ class BillingSummary extends Component {
 
   render() {
     let isValid = true; // TODO
-    const inputSpaces = '                                  ';
-    const pickerSpaces = '                                                            ';
+    const inputSpaces = '                         ';
+    const pickerSpaces = '                                               ';
 
     return (
       <Container>
@@ -82,11 +82,11 @@ class BillingSummary extends Component {
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label>{ this.props.discount }% Off</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (this.props.discount / 100)) ? (this.state.billAmount * (this.props.discount / 100)).toFixed(2) : '  -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (this.props.discount / 100)) ? (this.state.billAmount * (this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label style={ { fontWeight: 'bold' } }>Subtotal</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100)) ? (this.state.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '  -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100)) ? (this.state.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
 
             {/*
@@ -97,10 +97,10 @@ class BillingSummary extends Component {
             */}
             <Picker
               mode="dropdown"
-              placeholder="Select Tip Amount                                  -"
+              placeholder="Select Tip Amount                              "
               selectedValue={ this.state.tipPercentage }
               onValueChange={ this._onPick }
-              iosHeader="Select Tip Percentage"
+              iosHeader="Select Tip"
             >
               <Picker.Item label={ `Tip${pickerSpaces} 8%` } value={ 0.08 } />
               <Picker.Item label={ `Tip${pickerSpaces}10%` } value={ 0.10 } />
@@ -110,9 +110,9 @@ class BillingSummary extends Component {
               <Picker.Item label={ `Tip${pickerSpaces}30%` } value={ 0.30 } />
             </Picker>
 
-            <Item style={ { borderBottomWidth: 0 } } fixedLabel>
+            <Item style={ { borderTopWidth: 1, borderBottomWidth: 0 } } fixedLabel>
               <Label style={ { fontWeight: 'bold', fontSize: 20 } }>Total</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))) ? (this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))).toFixed(2) : '  -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))) ? (this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))).toFixed(2) : '    -'}` } />
             </Item>
           </Form>
         </Content>

@@ -14,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* CirclusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CirclusTests.m */; };
 		0E6E032A96BF4925B31E02FB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9936AFAA8324A168698E6D6 /* MaterialIcons.ttf */; };
+		1310DF261F97B0C90053ECAA /* TPSStripe in Resources */ = {isa = PBXBuildFile; fileRef = 1310DF251F97B0C90053ECAA /* TPSStripe */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		1379BD491F786EFE006E1B58 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1379BD481F786EFE006E1B58 /* Bolts.framework */; };
 		1379BD6B1F786F20006E1B58 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1379BD6A1F786F20006E1B58 /* FBSDKCoreKit.framework */; };
@@ -55,6 +56,8 @@
 		A05BA79D2E184A8FB5968FA8 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42B203BEE74B42AC8454FCDF /* Roboto_medium.ttf */; };
 		A3D51A2014814C2280EBA4B7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28CD75D5F8EF4B9384512E5C /* Octicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		C08F4FC9DF0E7DE465D71091 /* libPods-Circlus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE12F7EA67F1F8142DF1CE6 /* libPods-Circlus.a */; };
+		C36BCA6FC38347D5A9E3DCD9 /* libTPSStripe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B071C300EC624C44BCC5311E /* libTPSStripe.a */; };
 		C9DDE98949B24776BA7E8D5C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3617E8AAB0BD402C9185E8AF /* Entypo.ttf */; };
 		D9E1F3B531BF4CCBA7A424A5 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68689F3B793B4341A47D671C /* Ionicons.ttf */; };
 		F6B2EDF634494A1196032995 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE07FB6D4A2242A5932D0B87 /* SimpleLineIcons.ttf */; };
@@ -110,6 +113,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = ADD01A681E09402E00F6D226;
 			remoteInfo = "RCTBlob-tvOS";
+		};
+		1310DF231F97B0B80053ECAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6C7CFAE6737443838C5FC567 /* TPSStripe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A3A7F1A1DC27B520030F9DC;
+			remoteInfo = TPSStripe;
 		};
 		1379BD0C1F786BEA006E1B58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -326,6 +336,8 @@
 		00E356EE1AD99517003FC87E /* CirclusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CirclusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* CirclusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CirclusTests.m; sourceTree = "<group>"; };
+		0CE12F7EA67F1F8142DF1CE6 /* libPods-Circlus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Circlus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1310DF251F97B0C90053ECAA /* TPSStripe */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TPSStripe; sourceTree = "<group>"; };
 		1379BD481F786EFE006E1B58 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		1379BD6A1F786F20006E1B58 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		1379BD6C1F786F33006E1B58 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -341,6 +353,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Circlus/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Circlus/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		14B1FBA1CA0D1286E514BAAF /* Pods-Circlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Circlus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Circlus/Pods-Circlus.release.xcconfig"; sourceTree = "<group>"; };
 		1F860966286045F794055A43 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		28CD75D5F8EF4B9384512E5C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Circlus-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Circlus-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -354,12 +367,15 @@
 		5B180F50FC4E45E58A409B41 /* Lily Script One.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lily Script One.ttf"; path = "../src/lib/static/assets/fonts/Lily Script One.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		68689F3B793B4341A47D671C /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		6889A558E31891537D129D89 /* Pods-Circlus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Circlus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Circlus/Pods-Circlus.debug.xcconfig"; sourceTree = "<group>"; };
 		6A609235D08443CEA9213D6E /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
+		6C7CFAE6737443838C5FC567 /* TPSStripe.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TPSStripe.xcodeproj; path = "../node_modules/tipsi-stripe/ios/TPSStripe.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		AB2038249C04474BB5A63BA7 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../src/lib/static/assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		ABA173BA78BD4AD19F485588 /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B071C300EC624C44BCC5311E /* libTPSStripe.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libTPSStripe.a; sourceTree = "<group>"; };
 		B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCardIO.xcodeproj; path = "../node_modules/react-native-awesome-card-io/ios/RNCardIO.xcodeproj"; sourceTree = "<group>"; };
 		C1649C5BED474E0EAAAD614B /* libRNCardIO.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCardIO.a; sourceTree = "<group>"; };
 		D1F3506B4FF4450BAD0F4A3D /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -403,6 +419,8 @@
 				4C012096BF874D80B2F72E83 /* libRCTFBSDK.a in Frameworks */,
 				9D8EE32D4F90424B92D2E8A0 /* libRNPhotoView.a in Frameworks */,
 				FA45431DC19C41558FEBA21A /* libRNCardIO.a in Frameworks */,
+				C36BCA6FC38347D5A9E3DCD9 /* libTPSStripe.a in Frameworks */,
+				C08F4FC9DF0E7DE465D71091 /* libPods-Circlus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +508,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1310DEFE1F97B0B80053ECAA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1310DF241F97B0B80053ECAA /* libTPSStripe.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		134E5A261F66EB4C00BAD441 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +523,7 @@
 				1379BD6C1F786F33006E1B58 /* FBSDKLoginKit.framework */,
 				1379BD6A1F786F20006E1B58 /* FBSDKCoreKit.framework */,
 				1379BD481F786EFE006E1B58 /* Bolts.framework */,
+				0CE12F7EA67F1F8142DF1CE6 /* libPods-Circlus.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -608,6 +635,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		6B8519B7CE8297937C8CEB7D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6889A558E31891537D129D89 /* Pods-Circlus.debug.xcconfig */,
+				14B1FBA1CA0D1286E514BAAF /* Pods-Circlus.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -635,6 +671,7 @@
 				6A609235D08443CEA9213D6E /* RCTFBSDK.xcodeproj */,
 				52E2652393B148C597D80781 /* RNPhotoView.xcodeproj */,
 				B096AF394EB64FF0851AE569 /* RNCardIO.xcodeproj */,
+				6C7CFAE6737443838C5FC567 /* TPSStripe.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -651,12 +688,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1310DF251F97B0C90053ECAA /* TPSStripe */,
 				13B07FAE1A68108700A75B9A /* Circlus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CirclusTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				6203285EC65A49FBA86EFF90 /* Resources */,
 				134E5A261F66EB4C00BAD441 /* Frameworks */,
+				6B8519B7CE8297937C8CEB7D /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -708,10 +747,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Circlus" */;
 			buildPhases = (
+				CF60E8A7809AD87712D163E8 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				403066A48C6F727B7532854B /* [CP] Embed Pods Frameworks */,
+				07E9962CFB53E09A01466408 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -776,7 +818,7 @@
 						DevelopmentTeam = AL3QQKJ8WD;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -877,6 +919,10 @@
 					ProductGroup = 13EEA1B71F8541330050BFF7 /* Products */;
 					ProjectRef = 52E2652393B148C597D80781 /* RNPhotoView.xcodeproj */;
 				},
+				{
+					ProductGroup = 1310DEFE1F97B0B80053ECAA /* Products */;
+					ProjectRef = 6C7CFAE6737443838C5FC567 /* TPSStripe.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -929,6 +975,13 @@
 			fileType = archive.ar;
 			path = "libRCTBlob-tvOS.a";
 			remoteRef = 130694EA1F66CC8B00294185 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1310DF241F97B0B80053ECAA /* libTPSStripe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTPSStripe.a;
+			remoteRef = 1310DF231F97B0B80053ECAA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1379BD0D1F786BEA006E1B58 /* libRCTFBSDK.a */ = {
@@ -1154,6 +1207,7 @@
 				7A0FA71B56234AAD99A1C470 /* Roboto.ttf in Resources */,
 				6F6FFD27F8354373BFBE47FC /* rubicon-icon-font.ttf in Resources */,
 				F6B2EDF634494A1196032995 /* SimpleLineIcons.ttf in Resources */,
+				1310DF261F97B0C90053ECAA /* TPSStripe in Resources */,
 				1668FDF854C04CDFAC073C5A /* Zocial.ttf in Resources */,
 				35A6C8BC762E454583DE0FB5 /* Lily Script One.ttf in Resources */,
 				38088E0FBEB34AF6A15172F3 /* Comfortaa-Bold.ttf in Resources */,
@@ -1193,6 +1247,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		07E9962CFB53E09A01466408 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Circlus/Pods-Circlus-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/Stripe/Stripe.bundle,
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Circlus/Pods-Circlus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1206,6 +1278,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		403066A48C6F727B7532854B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Circlus/Pods-Circlus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF60E8A7809AD87712D163E8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Circlus-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1287,12 +1392,14 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = CirclusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1316,12 +1423,14 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = CirclusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1335,9 +1444,11 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6889A558E31891537D129D89 /* Pods-Circlus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Circlus/Circlus.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = AL3QQKJ8WD;
@@ -1352,6 +1463,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = Circlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1372,9 +1484,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 14B1FBA1CA0D1286E514BAAF /* Pods-Circlus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Circlus/Circlus.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AL3QQKJ8WD;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1388,6 +1502,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = Circlus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1425,11 +1540,13 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = "Circlus-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1463,11 +1580,13 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-awesome-card-io/ios/**",
+					"$(SRCROOT)/../node_modules/tipsi-stripe/ios/TPSStripe",
 				);
 				INFOPLIST_FILE = "Circlus-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1499,6 +1618,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Circlus-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1524,6 +1644,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Circlus-tvOSTests";

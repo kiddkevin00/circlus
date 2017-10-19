@@ -73,7 +73,7 @@ class Deals extends Component {
             <Left>
               <Button iconLeft transparent onPress={ () => {
                 stripe.init({
-                  publishableKey: "pk_test_CbjF57VBeGxsFyB4pMSpK2Z",
+                  publishableKey: "pk_test_CbjF57VBeGxsFybB4pMSpK2Z",
                 });
                 const options = {
                   smsAutofillDisabled: true,

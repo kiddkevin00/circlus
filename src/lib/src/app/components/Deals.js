@@ -1,3 +1,4 @@
+import AddCard from './AddCard2';
 import DealDetail from './DealDetail';
 import Signup from './Signup';
 import Login from './Login';
@@ -70,7 +71,12 @@ class Deals extends Component {
           </CardItem>
           <CardItem button onPress={ this._checkoutDealDetail.bind(this, deal) }>
             <Left>
-              <Button iconLeft transparent onPress={ () => Alert.alert('Success', 'The deal has been saved') }>
+              <Button iconLeft transparent onPress={ () => {
+                this.props.navigator.push({
+                  component: AddCard,
+                });
+                //Alert.alert('Success', 'The deal has been saved')
+              } }>
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="bookmark" />
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Save</Text>
               </Button>
@@ -111,7 +117,7 @@ class Deals extends Component {
       await firebaseAuth.signOut();
 
       this.props.navigator.replace({
-        title: 'Log In',
+        //title: 'Log In',
         component: Login,
       });
 
@@ -121,7 +127,7 @@ class Deals extends Component {
     } catch (error) {
       const errorMessage = error.message || 'Something went wrong.';
 
-      global.alert(errorMessage);
+      Alert.alert(errorMessage, JSON.stringify(error, null, 2));
 
       this.setState({
         isLoading: false,

@@ -39,7 +39,7 @@ class BillingSummary extends Component {
     billAmount: 0,
   };
 
-  _checkout = () => {
+  _handleCheckout = () => {
     this.props.navigator.push({
       component: AddCard,
       passProps: { totalAmount: this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0)) },
@@ -76,15 +76,15 @@ class BillingSummary extends Component {
         </Header>
         <Content padder>
           <Form>
-            <Item floatingLabel error={ !isValid }>
+            <Item stackedLabel error={ !isValid }>
               <Label>Enter Bill Amount</Label>
-              <Input keyboardType="numeric" autoFocus onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text) })} />
+              <Input keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text) })} />
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label>{ this.props.discount }% Off</Label>
               <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (this.props.discount / 100)) ? (this.state.billAmount * (this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
-            <Item style={ { borderBottomWidth: 0 } } fixedLabel>
+            <Item style={ { borderBottomWidth: 0, marginBottom: 20 } } fixedLabel>
               <Label style={ { fontWeight: 'bold' } }>Subtotal</Label>
               <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100)) ? (this.state.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
@@ -96,12 +96,14 @@ class BillingSummary extends Component {
             </Item>
             */}
             <Picker
+              style={ { borderWidth: 1, borderColor: '#D9D5DC', width: '100%' } }
               mode="dropdown"
-              placeholder="Select Tip Amount                              "
+              placeholder="Select Tip Amount                        0%"
               selectedValue={ this.state.tipPercentage }
               onValueChange={ this._onPick }
               iosHeader="Select Tip"
             >
+              <Picker.Item label={ `Tip${pickerSpaces} 0%` } value={ 0.00 } />
               <Picker.Item label={ `Tip${pickerSpaces} 8%` } value={ 0.08 } />
               <Picker.Item label={ `Tip${pickerSpaces}10%` } value={ 0.10 } />
               <Picker.Item label={ `Tip${pickerSpaces}15%` } value={ 0.15 } />
@@ -110,7 +112,7 @@ class BillingSummary extends Component {
               <Picker.Item label={ `Tip${pickerSpaces}30%` } value={ 0.30 } />
             </Picker>
 
-            <Item style={ { borderTopWidth: 1, borderBottomWidth: 0 } } fixedLabel>
+            <Item style={ { borderBottomWidth: 0, marginTop: 30 } } fixedLabel>
               <Label style={ { fontWeight: 'bold', fontSize: 20 } }>Total</Label>
               <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))) ? (this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))).toFixed(2) : '    -'}` } />
             </Item>
@@ -118,7 +120,7 @@ class BillingSummary extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._checkout }>
+            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._handleCheckout }>
               <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
             </Button>
           </FooterTab>

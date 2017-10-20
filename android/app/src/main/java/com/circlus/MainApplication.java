@@ -3,6 +3,7 @@ package com.circlus;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.gettipsi.stripe.StripeReactPackage;
 import com.cardio.RNCardIOPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new StripeReactPackage(),
             new RNCardIOPackage(),
             new PhotoViewPackage(),
             new FBSDKPackage()

@@ -18,7 +18,7 @@ class Landing extends Component {
     Linking.getInitialURL()
       .then((url) => {
         if (url) {
-          this._handleOpenURL({ url });
+          this._handleOpenFromURL({ url });
         } else {
           this.props.navigator.replace({
             component: Deals,
@@ -29,14 +29,14 @@ class Landing extends Component {
         console.log(`Something went wrong when getting launch URL - ${err}`);
       });
 
-    Linking.addEventListener('url', this._handleOpenURL);
+    Linking.addEventListener('url', this._handleOpenFromURL);
   }
 
   componentWillUnmount() {
-    //Linking.removeEventListener('url', this._handleOpenURL);
+    //Linking.removeEventListener('url', this._handleOpenFromURL);
   }
 
-  _handleOpenURL = (event) => {
+  _handleOpenFromURL = (event) => {
     const url = event.url.split('?');
     const path = url[0];
     const params = url[1] ? qs.parse(url[1]) : null;

@@ -1,8 +1,8 @@
+import AddCard from './AddCard2';
 import DealDetail from './DealDetail';
 import Signup from './Signup';
 import Login from './Login';
 import { firebaseAuth } from '../proxies/FirebaseProxy';
-import stripe from 'tipsi-stripe';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
   Container,
@@ -72,37 +72,13 @@ class Deals extends Component {
           <CardItem button onPress={ this._checkoutDealDetail.bind(this, deal) }>
             <Left>
               <Button iconLeft transparent onPress={ () => {
-                stripe.init({
-                  publishableKey: 'pk_test_CbjF57VBeGxsFybB4pMSpK2Z',
-                  merchantId: 'merchant.com.circlus.consumer.main',
+                this.props.navigator.push({
+                  component: AddCard,
                 });
-
-                const options = {
-                  smsAutofillDisabled: true,
-                  requiredBillingAddressFields: 'full',
-                  prefilledInformation: {
-                    billingAddress: {
-                      //name: 'Gunilla Haugeh',
-                      //line1: 'Canary Place',
-                      //line2: 'apt 3C',
-                      //city: 'New York',
-                      //state: 'NY',
-                      country: 'US',
-                      //postalCode: '31217',
-                    },
-                  },
-                }
-
-                stripe.paymentRequestWithCardForm(options)
-                  .then((response) => {
-                    console.log('RESPONSE:', response);
-                  })
-                  .catch((error) => {
-                    console.log('ERROR:', error);
-                  });
+                //Alert.alert('Success', 'The deal has been saved')
               } }>
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="bookmark" />
-                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>PAY</Text>
+                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Save</Text>
               </Button>
               <Text>&nbsp;</Text>
               <Button
@@ -141,7 +117,7 @@ class Deals extends Component {
       await firebaseAuth.signOut();
 
       this.props.navigator.replace({
-        title: 'Log In',
+        //title: 'Log In',
         component: Login,
       });
 

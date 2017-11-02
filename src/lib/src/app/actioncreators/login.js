@@ -1,9 +1,12 @@
-import Deals from '../components/Deals';
+import MyDeals from '../components/MyDeals';
 import actionTypes from '../actiontypes/';
 import { firebaseAuth, firebaseAuthProviders } from '../proxies/FirebaseProxy';
 import {
   AccessToken,
 } from 'react-native-fbsdk';
+import {
+  Alert,
+} from 'react-native';
 
 
 const loginActionCreator = {
@@ -32,14 +35,14 @@ const loginActionCreator = {
         });
 
         navigator.replace({
-          component: Deals,
+          component: MyDeals,
         });
 
         dispatch({
           type: actionTypes.LOGIN.FACEBOOK_LOGIN_SUCCEED,
         });
       } catch (err) {
-        global.alert(`Facebook login with Firebase failed: ${err}`);
+        Alert.alert('Error', `Facebook login with Firebase failed: ${err.message}`);
       }
     };
   },

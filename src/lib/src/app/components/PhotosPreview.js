@@ -83,7 +83,7 @@ class DealDetail extends Component {
 
   static propTypes = {
     indexShown: PropTypes.number.isRequired,
-    dealName: PropTypes.string.isRequired,
+    dealId: PropTypes.string.isRequired,
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -96,7 +96,7 @@ class DealDetail extends Component {
   }
 
   render() {
-    const deal = this.props.deals.find((d) => d.name === this.props.dealName) ||
+    const deal = this.props.deals.find((d) => d._id === this.props.dealId) ||
       constants.APP.SAMPLE_DEAL;
 
     return (

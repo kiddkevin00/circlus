@@ -1,7 +1,27 @@
 import stripe from 'tipsi-stripe';
 import { SelectPayment as SelectPaymentBlock } from 'react-native-checkout';
 import {
-  View,
+  Container,
+  Header,
+  Content,
+  Footer,
+  FooterTab,
+  Card,
+  CardItem,
+  Left,
+  Body,
+  Right,
+  Title,
+  Grid,
+  Row,
+  Col,
+  Thumbnail,
+  Button,
+  Text,
+  Icon,
+} from 'native-base';
+import {
+  Alert,
 } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -47,7 +67,7 @@ class SelectPayment extends Component {
         ],
       });
     } catch (err) {
-      console.log(err);
+      Alert.alert('Error', `Payment process failed: ${err.message}`);
     }
   }
 
@@ -78,26 +98,39 @@ class SelectPayment extends Component {
     } catch (err) {
       stripe.cancelApplePayRequest();
 
-      global.alert(err);
+      Alert.alert('Error', `Apple pay error: ${err.message}.`);
     }
   }
 
   _handleSelectPyment = (paymentSource) => {
-    console.log(paymentSource);
+    Alert.alert('Info', 'Selected Payment source:', paymentSource);
   }
 
   render() {
     return (
-      <View style={ { flex: 1, marginTop: 20 } }>
-        <SelectPaymentBlock
-          styles={ {} } // Overrides default styles here.
-          enableApplePay={ true } // Optional. Default: false
-          paymentSources={ this.state.paymentSources } // Mandatory. See: [Customer Object](https://stripe.com/docs/api/node#customer_object) -> sources -> data for Stripe format.
-          applePayHandler={ this._handleApplePay }
-          addCardHandler={ this._handleAddCard }
-          selectPaymentHandler={ this._handleSelectPyment }
-        />
-      </View>
+      <Container>
+        <Header style={ { backgroundColor: '#3F5EFB' } }>
+          <Left>
+            <Button transparent onPress={ () => this.props.navigator.pop() }>
+              <Icon style={ { color: 'white', fontSize: 20 } } name="arrow-back" />
+            </Button>
+          </Left>
+          <Body style={ { flexGrow: 5 } }>
+            <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 15 } }>Select Default Payment</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content>
+          <SelectPaymentBlock
+            styles={ {} } // Overrides default styles here.
+            enableApplePay={ true } // Optional. Default: false
+            paymentSources={ this.state.paymentSources } // Mandatory. See: [Customer Object](https://stripe.com/docs/api/node#customer_object) -> sources -> data for Stripe format.
+            applePayHandler={ this._handleApplePay }
+            addCardHandler={ this._handleAddCard }
+            selectPaymentHandler={ this._handleSelectPyment }
+          />
+        </Content>
+      </Container>
     );
   }
 

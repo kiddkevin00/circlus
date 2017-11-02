@@ -1,4 +1,3 @@
-import BillingSummary from './BillingSummary';
 import PhotosPreview from './PhotosPreview';
 import WebViewWrapper from './common/WebViewWrapper';
 import constants from '../constants/';
@@ -25,6 +24,7 @@ import {
 } from 'native-base';
 import {
   Alert,
+  Share,
   Linking,
   TouchableHighlight,
   Image,
@@ -40,7 +40,12 @@ import moment from 'moment';
 class DealDetail extends Component {
 
   static propTypes = {
-    dealName: PropTypes.string.isRequired,
+    dealId: PropTypes.string.isRequired,
+    footer: PropTypes.shape({
+      isVisiable: PropTypes.bool.isRequired,
+      text: PropTypes.string,
+      onPress: PropTypes.func,
+    }).isRequired,
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -53,19 +58,12 @@ class DealDetail extends Component {
     indexShown: 0,
   };
 
-  _gotoBillingSummary(discount) {
-    this.props.navigator.push({
-      component: BillingSummary,
-      passProps: { discount },
-    });
-  }
-
   _onPhotoSelect(indexShown) {
     this.props.navigator.push({
       component: PhotosPreview,
       passProps: {
         indexShown,
-        dealName: this.props.dealName,
+        dealId: this.props.dealId,
       },
     });
   }
@@ -87,12 +85,8 @@ class DealDetail extends Component {
         await Linking.openURL(url);
       }
     } catch (err) {
-      console.log(`Something went wrong when showing direction in map app - ${err}`);
+      Alert.alert('Error', `Showing direction failed: ${err.message}`);
     }
-  }
-
-  _backToDealsList = () => {
-    this.props.navigator.pop();
   }
 
   _reducePhotosView = (rowViews, photo, index, photos) => {
@@ -187,7 +181,7 @@ class DealDetail extends Component {
   }
 
   render() {
-    const deal = this.props.deals.find((d) => d.name === this.props.dealName) ||
+    const deal = this.props.deals.find((d) => d._id === this.props.dealId) ||
       constants.APP.SAMPLE_DEAL;
     const photosView = (
       Array.isArray(deal.photos) ? (
@@ -211,7 +205,7 @@ class DealDetail extends Component {
       <Container>
         <Header style={ { backgroundColor: '#3F5EFB' } }>
           <Left>
-            <Button transparent onPress={ this._backToDealsList }>
+            <Button transparent onPress={ () => this.props.navigator.pop() }>
               <Icon style={ { color: 'white', fontSize: 32 } } name="arrow-back" />
             </Button>
           </Left>
@@ -219,8 +213,18 @@ class DealDetail extends Component {
             <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
           <Right>
-            <Button transparent onPress={ () => Alert.alert('Success', 'The deal has been saved') }>
-              <Icon style={ { color: 'white' } } name="bookmark" />
+            <Button
+              transparent
+              onPress={ () => Share.share({
+                title: deal.name,
+                message: `Check out this deal - ${deal.name}:\n` +
+                  `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
+                  'Click the link below to download Circlus:\n' +
+                  'https://itunes.apple.com/us/app/circlus/',
+                //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
+              }) }
+            >
+              <Icon style={ { color: 'white' } } name="share" />
             </Button>
           </Right>
         </Header>
@@ -301,13 +305,15 @@ class DealDetail extends Component {
             <CardItem style={ { paddingTop: 0.1, paddingBottom: 0.1 } } />
           </Card>
         </Content>
-        <Footer>
-          <FooterTab>
-            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._gotoBillingSummary.bind(this, deal.discount.value) }>
-              <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Checkout</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+        { this.props.footer.isVisiable && (
+          <Footer>
+            <FooterTab>
+              <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this.props.footer.onPress }>
+                <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>{ this.props.footer.text }</Text>
+              </Button>
+            </FooterTab>
+          </Footer>
+        ) }
       </Container>
     );
   }

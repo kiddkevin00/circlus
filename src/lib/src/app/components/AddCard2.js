@@ -61,7 +61,7 @@ class AddCard extends Component {
             <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
           <Right>
-            <Button transparent onPress={ this._gotoSignup }>
+            <Button transparent onPress={ this._gotoLogin }>
               <Icon style={ { color: 'white' } } name="log-in" />
             </Button>
           </Right>

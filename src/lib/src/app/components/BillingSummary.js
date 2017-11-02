@@ -25,18 +25,19 @@ import PropTypes from 'prop-types';
 class BillingSummary extends Component {
 
   static propTypes = {
-    discount: PropTypes.number,//.isRequired,
+    discount: PropTypes.number.isRequired,
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   static defaultProps = {
-    discount: 30, // TODO
+    discount: 33, // TODO
   };
 
   state = {
     tipPercentage: undefined,
     billAmount: 0,
+    startValidating: false,
   };
 
   _handleCheckout = () => {
@@ -52,12 +53,7 @@ class BillingSummary extends Component {
     });
   }
 
-  _backToDealDetail = () => {
-    this.props.navigator.pop();
-  }
-
   render() {
-    let isValid = true; // TODO
     const inputSpaces = '                         ';
     const pickerSpaces = '                                               ';
 
@@ -65,7 +61,7 @@ class BillingSummary extends Component {
       <Container>
         <Header style={ { backgroundColor: '#3F5EFB' } }>
           <Left>
-            <Button transparent onPress={ this._backToDealDetail }>
+            <Button transparent onPress={ () => this.props.navigator.pop() }>
               <Icon style={ { color: 'white', fontSize: 32 } } name="arrow-back" />
             </Button>
           </Left>
@@ -76,9 +72,9 @@ class BillingSummary extends Component {
         </Header>
         <Content padder>
           <Form>
-            <Item stackedLabel error={ !isValid }>
+            <Item stackedLabel error={ this.state.startValidating && !this.state.billAmount }>
               <Label>Enter Bill Amount</Label>
-              <Input keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text) })} />
+              <Input keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text), startValidating: true }) } />
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label>{ this.props.discount }% Off</Label>
@@ -98,7 +94,7 @@ class BillingSummary extends Component {
             <Picker
               style={ { borderWidth: 1, borderColor: '#D9D5DC', width: '100%' } }
               mode="dropdown"
-              placeholder="Select Tip Amount                        0%"
+              placeholder="Select Tip Amount                        --"
               selectedValue={ this.state.tipPercentage }
               onValueChange={ this._onPick }
               iosHeader="Select Tip"

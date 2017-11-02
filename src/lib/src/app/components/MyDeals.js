@@ -1,9 +1,10 @@
 import DealDetail from './DealDetail';
-import MyDeals from './MyDeals';
+import BillingSummary from './BillingSummary';
+import Deals from './Deals';
 import Profile from './Profile';
+import actionCreator from '../actioncreators/myDeals';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
-  Toast,
   Container,
   Header,
   Content,
@@ -22,6 +23,7 @@ import {
   Icon,
 } from 'native-base';
 import {
+  Alert,
   Share,
   Image,
   Dimensions,
@@ -33,14 +35,22 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 
-class Deals extends Component {
+class MyDeals extends Component {
 
   static propTypes = {
+    dispatchFetchMyDeals: PropTypes.func.isRequired,
+
+    myDeals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
+
+  componentDidMount() {
+    this.props.dispatchFetchMyDeals();
+  }
 
   _renderDeal = (deal) => {
     const startDate = moment(deal.when.startTimestamp);
@@ -87,20 +97,9 @@ class Deals extends Component {
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Share</Text>
               </Button>
               <Text>&nbsp;</Text>
-              <Button
-                iconLeft
-                transparent
-                onPress={ () => {
-                  Toast.show({
-                    type: 'success',
-                    text: `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}`,
-                    position: 'bottom',
-                    duration: 3000,
-                  });
-                } }
-              >
-                <Icon style={ { fontSize: 22, color: '#6699ff' } } name="link" />
-                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Link</Text>
+              <Button iconLeft transparent onPress={ () => Alert.alert('Info', 'The deal has been removed.') }>
+                <Icon style={ { fontSize: 22, color: '#FF7171' } } name="remove-circle" />
+                <Text style={ { fontSize: 15, fontWeight: '700', color: '#FF7171' } }>Remove</Text>
               </Button>
             </Left>
             <Right>
@@ -120,14 +119,10 @@ class Deals extends Component {
         dealId: deal._id,
         footer: {
           isVisiable: true,
-          text: 'Share Link Now',
-          onPress: () => Share.share({
-            title: deal.name,
-            message: `Check out this deal - ${deal._id}:\n` +
-              `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-              'Click the link below to download Circlus:\n' +
-              'https://itunes.apple.com/us/app/circlus/',
-            //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
+          text: 'Checkout',
+          onPress: () => this.props.navigator.push({
+            component: BillingSummary,
+            passProps: { discount: deal.discount.value },
           }),
         },
       },
@@ -135,9 +130,10 @@ class Deals extends Component {
   }
 
   render() {
-    const deals = this.props.deals
-      .filter((deal) => !moment().isAfter(deal.when.endTimestamp))
-      .sort((deal1, deal2) => deal2.when.startTimestamp - deal1.when.startTimestamp);
+    const deals = this.props.myDeals
+      .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
+      .map((myDeal) => this.props.deals.find((deal) => deal._id === myDeal.id))
+      .filter((deal) => deal && !moment().isAfter(deal.when.endTimestamp));
 
     return (
       <Container>
@@ -156,12 +152,12 @@ class Deals extends Component {
         </Content>
         <Footer>
           <FooterTab>
-            <Button vertical onPress={ () => this.props.navigator.replace({ component: MyDeals }) }>
-              <Icon name="pricetags" />
+            <Button active vertical onPress={ () => {} }>
+              <Icon active name="pricetags" />
               <Text>Deals</Text>
             </Button>
-            <Button active vertical onPress={ () => {} }>
-              <Icon active name="share" />
+            <Button vertical onPress={ () => this.props.navigator.replace({ component: Deals }) }>
+              <Icon name="share" />
               <Text>Share</Text>
             </Button>
             <Button vertical onPress={ () => {} }>
@@ -180,18 +176,26 @@ class Deals extends Component {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    myDeals: state.myDeals.myDeals,
+    deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
+      Array.isArray(state.firebase.ordered.nyc.deals)) ?
+      state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
+    auth: state.firebase.auth,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchFetchMyDeals() {
+      dispatch(actionCreator.fetchMyDeals());
+    },
+  };
+}
+
 export default compose(
   firebaseConnect([
     { path: '/nyc/deals' },
   ]),
-  connect(
-    function mapStateToProps(state) {
-      return {
-        deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
-          Array.isArray(state.firebase.ordered.nyc.deals)) ?
-          state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
-        auth: state.firebase.auth,
-      };
-    }
-  )
-)(Deals);
+  connect(mapStateToProps, mapDispatchToProps)
+)(MyDeals);

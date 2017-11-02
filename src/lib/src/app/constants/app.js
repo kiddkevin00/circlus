@@ -1,4 +1,5 @@
 export const SAMPLE_DEAL = {
+  _id: '8ef1a643',
   detail: 'This is a sample deal...',
   discount: { display: '40% off for all your ordered', value: 40 },
   externalLink: 'https://goo.gl/idYcsR',

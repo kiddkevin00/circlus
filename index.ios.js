@@ -1,5 +1,6 @@
 import Landing from './src/lib/src/app/components/Landing';
 import configureStore from './src/lib/src/app/store/';
+import { Root } from 'native-base';
 import {
   NavigatorIOS,
   AppRegistry,
@@ -22,16 +23,18 @@ class Circlus extends Component {
 
   render() {
     return (
-      <Provider store={ store }>
-        <NavigatorIOS
-          style={ styles.container }
-          navigationBarHidden={ true }
-          initialRoute={ {
-            title: 'Title',
-            component: Landing,
-          } }
-        />
-      </Provider>
+      <Root>
+        <Provider store={ store }>
+          <NavigatorIOS
+            style={ styles.container }
+            navigationBarHidden={ true }
+            initialRoute={ {
+              title: 'Title',
+              component: Landing,
+            } }
+          />
+        </Provider>
+      </Root>
     );
   }
 

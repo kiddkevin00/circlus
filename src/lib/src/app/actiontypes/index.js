@@ -1,10 +1,12 @@
 import authActionTypes from '../actiontypes/auth';
 import loginActionTypes from '../actiontypes/login';
+import myDealsActionTypes from '../actiontypes/myDeals';
 
 
 const allActionTypesPerSection = {
   AUTH: authActionTypes,
   LOGIN: loginActionTypes,
+  MY_DEALS: myDealsActionTypes,
 };
 
 namespaceActionTypesPerSection(allActionTypesPerSection);

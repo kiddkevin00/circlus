@@ -1,4 +1,5 @@
 import SelectPayment from './SelectPayment';
+import stripe from 'tipsi-stripe';
 import { StripeAddCard } from 'react-native-checkout';
 import {
   Container,
@@ -13,8 +14,12 @@ import {
   Right,
   Title,
   Button,
+  Text,
   Icon,
 } from 'native-base';
+import {
+  Alert,
+} from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -35,25 +40,56 @@ class AddCard extends Component {
     cardNumber: undefined,
   };
 
+  _handleApplePay = async () => {
+    try {
+      const isSupported = await stripe.deviceSupportsApplePay();
+
+      if (isSupported) {
+        const canMakePayment = await stripe.canMakeApplePayPayments();
+
+        if (canMakePayment) {
+          const payingItems = [
+            { label: 'total spent', amount: '77.77' },
+            { label: '15% off', amount: '-10.00' },
+            { label: 'tax', amount: '2.23' },
+            { label: 'circlus inc', amount: '70.00' },
+          ];
+          const response = await stripe.paymentRequestWithApplePay(payingItems,
+            { currencyCode: 'USD' });
+
+          console.log('Token:', response);
+
+          stripe.completeApplePayRequest();
+        } else {
+          stripe.openApplePaySetup();
+        }
+      }
+    } catch (err) {
+      stripe.cancelApplePayRequest();
+
+      Alert.alert('Error', `Apple pay error: ${err.message}.`);
+    }
+  }
+
   render() {
     const customStripeAddCardStyle = {
       errorTextContainer: { height: 0 },
-      addButton: { marginTop: 0, marginBottom: 0, backgroundColor: '#5F79FB', borderColor: '#3F5EFB' },
+      addButton: { marginTop: 10, marginBottom: -10, backgroundColor: '#5F79FB', borderColor: '#3F5EFB' },
       addButtonText: { color: 'white' },
     };
 
     return (
       <Container>
         <Header style={ { backgroundColor: '#3F5EFB' } }>
-          <Left />
+          <Left>
+            <Button transparent onPress={ () => this.props.navigator.pop() }>
+              <Icon style={ { color: 'white', fontSize: 32 } } name="arrow-back" />
+            </Button>
+          </Left>
           <Body style={ { flexGrow: 3 } }>
             <Title style={ { color: 'white', fontFamily: 'Comfortaa-Regular', letterSpacing: 1.36, fontSize: 27 } }>circlus</Title>
           </Body>
-          <Right>
-            <Button transparent onPress={ this._gotoSignup }>
-              <Icon style={ { color: 'white' } } name="log-in" />
-            </Button>
-          </Right>
+          <Right />
         </Header>
         <Content>
           <StripeAddCard
@@ -81,6 +117,9 @@ class AddCard extends Component {
             expiryErrorMessage=""
             cvcErrorMessage=""
           />
+          <Button style={ { borderColor: '#3F5EFB' } } transparent full onPress={ this._handleApplePay }>
+            <Text style={ { color: '#3F5EFB' } }>or pay with Apple Pay</Text>
+          </Button>
         </Content>
       </Container>
     );

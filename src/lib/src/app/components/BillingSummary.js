@@ -4,7 +4,6 @@ import {
   Header,
   Content,
   Footer,
-  FooterTab,
   Form,
   Item,
   Label,
@@ -14,12 +13,13 @@ import {
   Body,
   Right,
   Title,
-  Button,
   Text,
   Icon,
+  Button,
 } from 'native-base';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
 
 class BillingSummary extends Component {
@@ -115,11 +115,13 @@ class BillingSummary extends Component {
           </Form>
         </Content>
         <Footer>
-          <FooterTab>
-            <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._handleCheckout }>
-              <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
-            </Button>
-          </FooterTab>
+          <Container>
+            <KeyboardAccessoryView alwaysVisible={ true }>
+              <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._handleCheckout }>
+                <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
+              </Button>
+            </KeyboardAccessoryView>
+          </Container>
         </Footer>
       </Container>
     );

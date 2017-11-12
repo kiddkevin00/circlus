@@ -121,7 +121,7 @@ class BillingSummary extends Component {
         <Footer>
           <Container>
             <KeyboardAccessoryView alwaysVisible={ true }>
-              <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._handleCheckout }>
+              <Button style={ { backgroundColor: '#6699ff', height: 55 } } full onPress={ this._handleCheckout }>
                 <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
               </Button>
             </KeyboardAccessoryView>

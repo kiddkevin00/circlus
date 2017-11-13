@@ -5,6 +5,7 @@ import Profile from './Profile';
 import actionCreator from '../actioncreators/myDeals';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
+  Spinner,
   Container,
   Header,
   Content,
@@ -39,17 +40,32 @@ class MyDeals extends Component {
 
   static propTypes = {
     dispatchFetchMyDeals: PropTypes.func.isRequired,
-
     myDeals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   componentDidMount() {
     this.props.dispatchFetchMyDeals();
+  }
+
+  _checkoutDealDetail(deal) {
+    this.props.navigator.push({
+      component: DealDetail,
+      passProps: {
+        dealId: deal._id,
+        footer: {
+          isVisiable: true,
+          text: 'Checkout',
+          onPress: () => this.props.navigator.push({
+            component: BillingSummary,
+            passProps: { discount: deal.discount.value },
+          }),
+        },
+      },
+    });
   }
 
   _renderDeal = (deal) => {
@@ -112,23 +128,6 @@ class MyDeals extends Component {
     );
   }
 
-  _checkoutDealDetail(deal) {
-    this.props.navigator.push({
-      component: DealDetail,
-      passProps: {
-        dealId: deal._id,
-        footer: {
-          isVisiable: true,
-          text: 'Checkout',
-          onPress: () => this.props.navigator.push({
-            component: BillingSummary,
-            passProps: { discount: deal.discount.value },
-          }),
-        },
-      },
-    });
-  }
-
   render() {
     const deals = this.props.myDeals
       .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
@@ -145,6 +144,7 @@ class MyDeals extends Component {
           <Right />
         </Header>
         <Content>
+          { deals.length === 0 && <Spinner color="blue" /> }
           <List
             dataArray={ deals }
             renderRow={ this._renderDeal }
@@ -182,7 +182,6 @@ function mapStateToProps(state) {
     deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
       Array.isArray(state.firebase.ordered.nyc.deals)) ?
       state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
-    auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {

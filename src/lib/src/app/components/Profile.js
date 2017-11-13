@@ -1,9 +1,10 @@
 import MyDeals from './MyDeals';
 import Deals from './Deals';
-import Login from './Login';
 import SelectPayment from './SelectPayment';
-import { firebaseAuth } from '../proxies/FirebaseProxy';
+import actionCreator from '../actioncreators/profile';
+import { firebaseConnect } from 'react-redux-firebase';
 import {
+  Spinner,
   Container,
   Header,
   Content,
@@ -22,6 +23,8 @@ import {
 import {
   Alert,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -29,37 +32,34 @@ import PropTypes from 'prop-types';
 class Profile extends Component {
 
   static propTypes = {
+    dispatchFacebookLogin: PropTypes.func.isRequired,
+    dispatchLogout: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    isErrorVisible: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+
+    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
-  // TODO
-  _handleLogout = async () => {
-    this.setState({
-      isLoading: true,
-    });
-
-    try {
-      await firebaseAuth.signOut();
-
-      this.props.navigator.replace({
-        component: Login,
-      });
-
-      this.setState({
-        isLoading: false,
-      });
-    } catch (error) {
-      const errorMessage = error.message || 'Something went wrong.';
-
-      Alert.alert('Error', errorMessage);
-
-      this.setState({
-        isLoading: false,
-      });
+  _handleAuthentication = async () => {
+    if (this.props.auth.isEmpty) {
+      await this.props.dispatchFacebookLogin();
+    } else {
+      await this.props.dispatchLogout();
     }
   }
 
   render() {
+    if (!this.props.auth.isLoaded) {
+      return null;
+    }
+
+    if (this.props.isErrorVisible) {
+      Alert.alert('Error', `Please try it again.\n${this.props.errorMessage}`);
+    }
+
     return (
       <Container>
         <Header style={ { backgroundColor: '#3F5EFB' } }>
@@ -74,12 +74,12 @@ class Profile extends Component {
             <ListItem itemDivider>
               <Text>Account</Text>
             </ListItem>
-            <ListItem icon button onPress={ () => this.props.navigator.replace({ component: Login }) }>
+            <ListItem icon button onPress={ this._handleAuthentication }>
               <Left>
                 <Icon active name="logo-facebook" />
               </Left>
               <Body>
-                <Text>Sign in with Facebook</Text>
+                <Text>{ this.props.auth.isEmpty ? 'Sign in with Facebook' : 'Sign out' }</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -147,6 +147,7 @@ class Profile extends Component {
               </Right>
             </ListItem>
           </List>
+          { this.props.isLoading && <Spinner color="blue" /> }
         </Content>
         <Footer>
           <FooterTab>
@@ -174,4 +175,27 @@ class Profile extends Component {
 
 }
 
-export { Profile as default };
+function mapStateToProps(state) {
+  return {
+    isLoading: state.profile.isLoading,
+    isErrorVisible: state.profile.error.isVisiable,
+    errorMessage: state.profile.error.message,
+    auth: state.firebase.auth,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchFacebookLogin() {
+      dispatch(actionCreator.facebookLogin());
+    },
+
+    dispatchLogout() {
+      dispatch(actionCreator.logout());
+    },
+  };
+}
+
+export default compose(
+  firebaseConnect([]),
+  connect(mapStateToProps, mapDispatchToProps),
+)(Profile);

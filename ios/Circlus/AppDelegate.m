@@ -25,9 +25,9 @@
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"Circlus"
+                                                  moduleName:@"Circlus"
                                                initialProperties:nil
-                                                   launchOptions:launchOptions];
+                                                  launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   
   /*
@@ -63,7 +63,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
   BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
     openURL:url
@@ -74,6 +74,14 @@
   // Add other custom logic here.
   
   return handled;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+    restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
+{
+  return [RCTLinkingManager application:application
+    continueUserActivity:userActivity
+    restorationHandler:restorationHandler];
 }
 
 @end

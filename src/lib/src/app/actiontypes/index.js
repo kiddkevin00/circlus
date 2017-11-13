@@ -1,10 +1,12 @@
 import authActionTypes from '../actiontypes/auth';
 import loginActionTypes from '../actiontypes/login';
+import profileActionTypes from '../actiontypes/profile';
 import myDealsActionTypes from '../actiontypes/myDeals';
 
 
 const allActionTypesPerSection = {
   AUTH: authActionTypes,
+  PROFILE: profileActionTypes,
   LOGIN: loginActionTypes,
   MY_DEALS: myDealsActionTypes,
 };

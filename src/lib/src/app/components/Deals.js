@@ -3,6 +3,7 @@ import MyDeals from './MyDeals';
 import Profile from './Profile';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
+  Spinner,
   Toast,
   Container,
   Header,
@@ -36,11 +37,37 @@ import moment from 'moment';
 class Deals extends Component {
 
   static propTypes = {
+    influencers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
+
+  _checkoutDealDetail(deal) {
+    this.props.navigator.push({
+      component: DealDetail,
+      passProps: {
+        dealId: deal._id,
+        footer: {
+          isVisiable: true,
+          text: 'Share Link Now',
+          onPress: () => Share.share({
+            title: deal.name,
+            message: `Check out this deal - ${deal._id}:\n` +
+              `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
+              'Click the link below to download Circlus:\n' +
+              'https://itunes.apple.com/us/app/circlus/',
+            //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
+          }),
+        },
+      },
+    });
+  }
+
+  _isAnInfluencer() {
+    return !!this.props.influencers.find((influencer) => influencer.email === this.props.auth.email);
+  }
 
   _renderDeal = (deal) => {
     const startDate = moment(deal.when.startTimestamp);
@@ -113,31 +140,16 @@ class Deals extends Component {
     );
   }
 
-  _checkoutDealDetail(deal) {
-    this.props.navigator.push({
-      component: DealDetail,
-      passProps: {
-        dealId: deal._id,
-        footer: {
-          isVisiable: true,
-          text: 'Share Link Now',
-          onPress: () => Share.share({
-            title: deal.name,
-            message: `Check out this deal - ${deal._id}:\n` +
-              `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-              'Click the link below to download Circlus:\n' +
-              'https://itunes.apple.com/us/app/circlus/',
-            //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
-          }),
-        },
-      },
-    });
-  }
-
   render() {
-    const deals = this.props.deals
-      .filter((deal) => !moment().isAfter(deal.when.endTimestamp))
-      .sort((deal1, deal2) => deal2.when.startTimestamp - deal1.when.startTimestamp);
+    let deals;
+
+    if (this.props.auth.isEmpty || !this._isAnInfluencer()) {
+      deals = [];
+    } else {
+      deals = this.props.deals
+        .filter((deal) => !moment().isAfter(deal.when.endTimestamp))
+        .sort((deal1, deal2) => deal2.when.startTimestamp - deal1.when.startTimestamp);
+    }
 
     return (
       <Container>
@@ -149,6 +161,7 @@ class Deals extends Component {
           <Right />
         </Header>
         <Content>
+          { deals.length === 0 && <Spinner color="blue" /> }
           <List
             dataArray={ deals }
             renderRow={ this._renderDeal }
@@ -180,18 +193,22 @@ class Deals extends Component {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    influencers: (state.firebase.ordered && state.firebase.ordered.nyc &&
+      Array.isArray(state.firebase.ordered.nyc.influencers)) ?
+      state.firebase.ordered.nyc.influencers.map((influencer) => influencer.value) : [],
+    deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
+      Array.isArray(state.firebase.ordered.nyc.deals)) ?
+      state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
+    auth: state.firebase.auth,
+  };
+}
+
 export default compose(
   firebaseConnect([
     { path: '/nyc/deals' },
+    { path: '/nyc/influencers' },
   ]),
-  connect(
-    function mapStateToProps(state) {
-      return {
-        deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
-          Array.isArray(state.firebase.ordered.nyc.deals)) ?
-          state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
-        auth: state.firebase.auth,
-      };
-    }
-  )
+  connect(mapStateToProps),
 )(Deals);

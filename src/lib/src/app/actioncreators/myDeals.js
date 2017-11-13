@@ -9,7 +9,7 @@ const myDealsActionCreator = {
   fetchMyDeals() {
     return async (dispatch/*, getState*/) => {
       dispatch({
-        type: actionTypes.MY_DEALS.FETCHING_MY_DEALS,
+        type: actionTypes.MY_DEALS.FETCH_MY_DEALS_REQUEST,
       });
 
       try {
@@ -23,7 +23,7 @@ const myDealsActionCreator = {
           myDeals = [];
         }
         dispatch({
-          type: actionTypes.MY_DEALS.FETCH_MY_DEALS_SUCCEED,
+          type: actionTypes.MY_DEALS.FETCH_MY_DEALS_SUCCESS,
           payload: { myDeals },
         });
       } catch (err) {

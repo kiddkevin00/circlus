@@ -1,13 +1,13 @@
 import actionTypes from '../actiontypes/';
 import { firebaseAuth, firebaseAuthProviders } from '../proxies/FirebaseProxy';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 
-const loginActionCreator = {
+const profileActionCreator = {
   facebookLogin() {
     return async (dispatch/*, getState*/) => {
       dispatch({
-        type: actionTypes.LOGIN.LOGIN_REQUEST,
+        type: actionTypes.PROFILE.LOGIN_REQUEST,
       });
 
       try {
@@ -16,17 +16,40 @@ const loginActionCreator = {
 
         if (result.isCancelled) {
           dispatch({
-            type: actionTypes.LOGIN.LOGIN_CANCEL,
+            type: actionTypes.PROFILE.LOGIN_CANCEL,
           });
         } else {
           this._facebookPostLogin(dispatch);
         }
       } catch (error) {
         dispatch({
-          type: actionTypes.LOGIN.LOGIN_FAILURE,
+          type: actionTypes.PROFILE.LOGIN_FAILURE,
           payload: {
             errorMsg: `Facebook login failed: ${error}.`,
           },
+        });
+      }
+    };
+  },
+
+  logout() {
+    return async (dispatch/*, getState*/) => {
+      dispatch({
+        type: actionTypes.PROFILE.LOGOUT_REQUEST,
+      });
+
+      try {
+        await firebaseAuth.signOut();
+
+        dispatch({
+          type: actionTypes.PROFILE.LOGOUT_SUCCESS,
+        });
+      } catch (error) {
+        const errorMsg = error.message || 'Something went wrong.';
+
+        dispatch({
+          type: actionTypes.PROFILE.LOGOUT_FAILURE,
+          payload: { errorMsg },
         });
       }
     };
@@ -47,16 +70,17 @@ const loginActionCreator = {
             email: userInfo.email,
             photoURL: userInfo.photoURL,
             isAnonymous: userInfo.isAnonymous,
+            providerData: userInfo.providerData,
           },
         },
       });
 
       dispatch({
-        type: actionTypes.LOGIN.LOGIN_SUCCESS,
+        type: actionTypes.PROFILE.LOGIN_SUCCESS,
       });
     } catch (err) {
       dispatch({
-        type: actionTypes.LOGIN.LOGIN_FAILURE,
+        type: actionTypes.PROFILE.LOGIN_FAILURE,
         payload: {
           errorMsg: `Facebook login with Firebase failed: ${err.message}`,
         },
@@ -65,4 +89,4 @@ const loginActionCreator = {
   },
 };
 
-export { loginActionCreator as default };
+export { profileActionCreator as default };

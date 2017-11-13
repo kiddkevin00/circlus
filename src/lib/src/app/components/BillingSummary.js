@@ -13,11 +13,12 @@ import {
   Body,
   Right,
   Title,
+  Button,
   Text,
   Icon,
-  Button,
 } from 'native-base';
 import React, { Component } from 'react';
+import { View } from 'react-native'
 import PropTypes from 'prop-types';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
@@ -74,7 +75,7 @@ class BillingSummary extends Component {
           <Form>
             <Item stackedLabel error={ this.state.startValidating && !this.state.billAmount }>
               <Label>Enter Bill Amount</Label>
-              <Input keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text), startValidating: true }) } />
+              <Input autoFocus keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text), startValidating: true }) } />
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label>{ this.props.discount }% Off</Label>
@@ -84,13 +85,6 @@ class BillingSummary extends Component {
               <Label style={ { fontWeight: 'bold' } }>Subtotal</Label>
               <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100)) ? (this.state.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
-
-            {/*
-            <Item floatingLabel error={ !isValid } last>
-              <Label>Enter Tip Amount</Label>
-              <Input keyboardType="numeric" />
-            </Item>
-            */}
             <Picker
               style={ { borderWidth: 1, borderColor: '#D9D5DC', width: '100%' } }
               mode="dropdown"
@@ -107,7 +101,6 @@ class BillingSummary extends Component {
               <Picker.Item label={ `Tip${pickerSpaces}25%` } value={ 0.25 } />
               <Picker.Item label={ `Tip${pickerSpaces}30%` } value={ 0.30 } />
             </Picker>
-
             <Item style={ { borderBottomWidth: 0, marginTop: 30 } } fixedLabel>
               <Label style={ { fontWeight: 'bold', fontSize: 20 } }>Total</Label>
               <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))) ? (this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))).toFixed(2) : '    -'}` } />
@@ -115,9 +108,9 @@ class BillingSummary extends Component {
           </Form>
         </Content>
         <Footer>
-          <Container>
+          <Container style={ { height: 'auto' } }>
             <KeyboardAccessoryView alwaysVisible={ true }>
-              <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._handleCheckout }>
+              <Button style={ { backgroundColor: '#6699ff', height: 55 } } full onPress={ this._handleCheckout }>
                 <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
               </Button>
             </KeyboardAccessoryView>

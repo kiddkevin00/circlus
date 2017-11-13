@@ -10,9 +10,9 @@ function myDealsReducer(state = initialState, action) {
   const actionPayload = action.payload;
 
   switch (actionType) {
-    case actionTypes.MY_DEALS.FETCHING_MY_DEALS:
+    case actionTypes.MY_DEALS.FETCH_MY_DEALS_REQUEST:
       return state;
-    case actionTypes.MY_DEALS.FETCH_MY_DEALS_SUCCEED:
+    case actionTypes.MY_DEALS.FETCH_MY_DEALS_SUCCESS:
       return {
         ...state,
         myDeals: actionPayload.myDeals,

@@ -21,7 +21,7 @@ function authReducer(state = initialState, action) {
   const actionPayload = action.payload;
 
   switch (actionType) {
-    case actionTypes.AUTH.FACEBOOK_LOGIN_SUCCEED:
+    case actionTypes.AUTH.FACEBOOK_LOGIN_SUCCESS:
       return {
         ...state,
         isLoggedIn: true,

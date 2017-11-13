@@ -1,4 +1,4 @@
-import Landing from './src/lib/src/app/components/BillingSummary';
+import Landing from './src/lib/src/app/components/Landing';
 import configureStore from './src/lib/src/app/store/';
 import { Root } from 'native-base';
 import {

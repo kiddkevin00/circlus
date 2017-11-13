@@ -1,6 +1,8 @@
 const loginActionTypes = {
-  LOGGING_IN: 'LOGGING_IN',
-  FACEBOOK_LOGIN_SUCCEED: 'FACEBOOK_LOGIN_SUCCEED',
+  LOGIN_REQUEST: 'LOGIN_REQUEST',
+  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+  LOGIN_FAILURE: 'LOGIN_FAILURE',
+  LOGIN_CANCEL: 'LOGIN_CANCEL',
 };
 
-export default loginActionTypes;
+export { loginActionTypes as default };

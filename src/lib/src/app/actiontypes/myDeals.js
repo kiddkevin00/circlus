@@ -1,6 +1,6 @@
 const myDealsActionTypes = {
-  FETCHING_MY_DEALS: 'FETCHING_MY_DEALS',
-  FETCH_MY_DEALS_SUCCEED: 'FETCH_MY_DEALS_SUCCEED',
+  FETCH_MY_DEALS_REQUEST: 'FETCH_MY_DEALS_REQUEST',
+  FETCH_MY_DEALS_SUCCESS: 'FETCH_MY_DEALS_SUCCESS',
 };
 
-export default myDealsActionTypes;
+export { myDealsActionTypes as default };

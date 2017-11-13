@@ -2,7 +2,6 @@ import MyDeals from './MyDeals';
 import Deals from './Deals';
 import Profile from './Profile';
 import actionCreator from '../actioncreators/login';
-import { LoginManager } from 'react-native-fbsdk';
 import Swiper from 'react-native-swiper';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -38,45 +37,34 @@ const styles = StyleSheet.create({
 class Login extends Component {
 
   static propTypes = {
-    dispatchFacebookPostLogin: PropTypes.func.isRequired,
+    dispatchFacebookLogin: PropTypes.func.isRequired,
+    isErrorVisible: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string.isRequired,
 
-    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
-  state = {
-    formEmail: '',
-    formPassword: '',
-    isLoading: false,
-    error: '',
-  };
-
-  componentDidUpdate() {
-    //if (!this.props.auth.isEmpty) {
-    //  this.props.navigator.replace({
-    //    component: Deals,
-    //  });
-    //}
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.auth.isEmpty || !nextProps.auth.isEmpty) {
+      this.props.navigator.replace({
+        component: MyDeals,
+      });
+    }
   }
 
   _handleFacebookLogin = async () => {
-    try {
-      const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_friends']);
-
-      if (result.isCancelled) {
-        Alert.alert('Info', 'Facebook login cancelled.');
-      } else {
-        this.props.dispatchFacebookPostLogin(this.props.navigator);
-      }
-    } catch (error) {
-      Alert.alert('Error', `Facebook login failed: ${error}.`);
-    }
+    await this.props.dispatchFacebookLogin();
   }
 
   render() {
     if (!this.props.auth.isLoaded) {
       return null;
+    }
+
+    if (this.props.isErrorVisible) {
+      Alert.alert('Error', `Please try it again.\n${this.props.errorMessage}`);
     }
 
     const backgroundImageInlineStyle = {
@@ -140,8 +128,8 @@ class Login extends Component {
               <Icon name="cash" />
               <Text>Billing</Text>
             </Button>
-            <Button active vertical onPress={ () => this.props.navigator.replace({ component: Profile }) }>
-              <Icon active name="contact" />
+            <Button vertical onPress={ () => this.props.navigator.replace({ component: Profile }) }>
+              <Icon name="contact" />
               <Text>Profile</Text>
             </Button>
           </FooterTab>
@@ -154,13 +142,15 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   return {
+    isErrorVisible: state.login.error.isVisiable,
+    errorMessage: state.login.error.message,
     auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchFacebookPostLogin(navigator) {
-      dispatch(actionCreator.facebookPostLogin(navigator));
+    dispatchFacebookLogin() {
+      dispatch(actionCreator.facebookLogin());
     },
   };
 }

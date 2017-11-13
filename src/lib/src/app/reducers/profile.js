@@ -10,20 +10,23 @@ const initialState = {
   },
 };
 
-function loginReducer(state = initialState, action) {
+function profileReducer(state = initialState, action) {
   const actionType = action.type;
   const actionPayload = action.payload;
 
   switch (actionType) {
-    case actionTypes.LOGIN.LOGIN_REQUEST:
+    case actionTypes.PROFILE.LOGIN_REQUEST:
+    case actionTypes.PROFILE.LOGOUT_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case actionTypes.LOGIN.LOGIN_SUCCESS:
-    case actionTypes.LOGIN.LOGIN_CANCEL:
+    case actionTypes.PROFILE.LOGIN_SUCCESS:
+    case actionTypes.PROFILE.LOGIN_CANCEL:
+    case actionTypes.PROFILE.LOGOUT_SUCCESS:
       return initialState;
     case actionTypes.PROFILE.LOGIN_FAILURE:
+    case actionTypes.PROFILE.LOGOUT_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -37,4 +40,4 @@ function loginReducer(state = initialState, action) {
   }
 }
 
-export { loginReducer as default };
+export { profileReducer as default };

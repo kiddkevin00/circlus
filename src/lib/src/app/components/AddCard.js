@@ -1,4 +1,4 @@
-import SelectPayment from './SelectPayment';
+import HttpProxy from '../proxies/HttpProxy'
 import stripe from 'tipsi-stripe';
 import { StripeAddCard } from 'react-native-checkout';
 import {
@@ -19,6 +19,7 @@ import {
 } from 'native-base';
 import {
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -36,9 +37,17 @@ class AddCard extends Component {
     totalAmount: 77.77, // TODO
   };
 
-  state = {
-    cardNumber: undefined,
-  };
+  _handleStripeToken = async (token) => {
+    const httpClient = HttpProxy.createInstance();
+
+    try {
+      const { customerId } = await httpClient.post('/payment/proceed', { token });
+
+      await AsyncStorage.setItem('@LocalDatabase:customerId', customerId);
+    } catch (err) {
+      console.log(err); // [TODO] Should handle error case.
+    }
+  }
 
   _handleApplePay = async () => {
     try {
@@ -94,10 +103,10 @@ class AddCard extends Component {
         <Content>
           <StripeAddCard
             styles={ customStripeAddCardStyle } // Overrides default styles here. #https://github.com/z-dev/react-native-checkout/blob/master/src/components/addCard/defaultStyles.js
-            addCardTokenHandler={ (token) => { this.props.navigator.push({ component: SelectPayment, passProps: { newCard: { token, last4: this.state.cardNumber.slice(0, 4) } } }); } }
+            addCardTokenHandler={ this._handleStripeToken }
             publicStripeKey="pk_test_CbjF57VBeGxsFybB4pMSpK2Z"
             onCardNumberFocus={ () => {} }
-            onCardNumberBlur={ (cardNumber) => this.setState({ cardNumber }) }
+            onCardNumberBlur={ () => {} }
             onCvcFocus={ () => {} }
             onCvcBlur={ () => {} }
             onExpiryFocus={ () => {} }

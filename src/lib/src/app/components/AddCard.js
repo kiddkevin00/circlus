@@ -1,14 +1,13 @@
-import HttpProxy from '../proxies/HttpProxy'
+import MyDeals from './MyDeals';
+import HttpProxy from '../proxies/HttpProxy';
+import StandardResponseWrapper from '../utils/StandardResponseWrapper';
+import constants from '../constants/';
 import stripe from 'tipsi-stripe';
 import { StripeAddCard } from 'react-native-checkout';
 import {
   Container,
   Header,
   Content,
-  List,
-  ListItem,
-  Card,
-  CardItem,
   Left,
   Body,
   Right,
@@ -37,15 +36,27 @@ class AddCard extends Component {
     totalAmount: 77.77, // TODO
   };
 
-  _handleStripeToken = async (token) => {
+  // TODO
+  _handleStripeToken = async (tokenId) => {
     const httpClient = HttpProxy.createInstance();
 
     try {
-      const { customerId } = await httpClient.post('/payment/proceed', { token });
+      const requesyBody = { tokenId, email: 'test@test.com', chargeAmount: this.props.totalAmount };
+      const { data } = await httpClient.post('/payment/proceed', requesyBody);
 
-      await AsyncStorage.setItem('@LocalDatabase:customerId', customerId);
+      if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {
+        const customerId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.customerId;
+
+        await AsyncStorage.setItem('@LocalDatabase:customerId', customerId);
+
+        this.props.navigator.push({
+          component: MyDeals,
+        });
+      } else {
+        Alert.alert('Error', 'Please try it again.');
+      }
     } catch (err) {
-      console.log(err); // [TODO] Should handle error case.
+      Alert.alert('Error', `Please try it again.\n${err}`);
     }
   }
 
@@ -104,7 +115,7 @@ class AddCard extends Component {
           <StripeAddCard
             styles={ customStripeAddCardStyle } // Overrides default styles here. #https://github.com/z-dev/react-native-checkout/blob/master/src/components/addCard/defaultStyles.js
             addCardTokenHandler={ this._handleStripeToken }
-            publicStripeKey="pk_test_CbjF57VBeGxsFybB4pMSpK2Z"
+            publicStripeKey={ constants.CREDENTIAL.STRIPE.PUBLIC_KEY }
             onCardNumberFocus={ () => {} }
             onCardNumberBlur={ () => {} }
             onCvcFocus={ () => {} }

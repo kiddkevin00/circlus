@@ -31,7 +31,7 @@ class HttpClient {
 
   static createInstance(instanceConfig) {
     const axiosInstance = axios.create({
-      baseURL: global.__DEV__ ? 'http://127.0.0.1:8087/api/v0' : 'https://circlus.herokuapp.com/api/v0',
+      baseURL: global.__DEV__ ? 'http://127.0.0.1:8087/api/v0' : 'https://circlus-backend.herokuapp.com/api/v0',
       withCredentials: true,
       timeout: 5000,
       ...instanceConfig,

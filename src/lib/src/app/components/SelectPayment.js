@@ -42,6 +42,7 @@ class SelectPayment extends Component {
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     dispatchCreateBankAccount: PropTypes.func.isRequired,
+    stripeCode: PropTypes.string
   };
 
   state = {
@@ -51,6 +52,13 @@ class SelectPayment extends Component {
       { last4: '2345', brand: 'Master Card', token: 'tok_3' },
     ],
   };
+
+  componentDidMount() {
+    if (this.props.stripeCode) {
+      console.log('hiiiiiiii here I ammmm', this.props.stripeCode)
+      //TODO: call backend route
+    }
+  }
 
   _handleAddCard = async () => {
     const options = {
@@ -112,10 +120,11 @@ class SelectPayment extends Component {
     Alert.alert('Info', 'Selected Payment source:', paymentSource);
   }
 
-  _connectToStripe = async () => {
+  _connectToStripe = () => {
     const url = 'https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://circlus.herokuapp.com&client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
+
     Linking.openURL(url)
-     .catch(err => console.error('An error occurred', err));
+     .catch((err) => Alert.alert('An error occurred', err));
   }
 
   render() {
@@ -141,7 +150,7 @@ class SelectPayment extends Component {
             addCardHandler={ this._handleAddCard }
             selectPaymentHandler={ this._handleSelectPyment }
           />
-          <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this.connectToStripe.bind(this, {}) }>
+        <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._connectToStripe } >
             <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Add Bank Account</Text>
           </Button>
         </Content>

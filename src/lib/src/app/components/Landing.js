@@ -94,9 +94,7 @@ class Landing extends Component {
       if (params && params.code) {
         const stripeCode = params.code;
 
-        this.props.navigator.replace({
-          component: SelectPayment,
-        });
+        //TODO: Add code to state
         this.props.navigator.push({
           component: SelectPayment,
           passProps: {

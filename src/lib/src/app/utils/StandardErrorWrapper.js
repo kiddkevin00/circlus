@@ -107,7 +107,7 @@ class StandardErrorWrapper {
   }
 
   static verifyFormat(obj) {
-    const errors = obj.errors;
+    const errors = obj && obj.errors;
 
     return !!Array.isArray(errors);
   }

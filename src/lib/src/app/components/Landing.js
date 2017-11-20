@@ -1,5 +1,6 @@
 import DealDetail from './DealDetail';
 import MyDeals from './MyDeals';
+import SelectPayment from './SelectPayment';
 import Login from './Login';
 import { Toast } from 'native-base';
 import {
@@ -88,6 +89,19 @@ class Landing extends Component {
       } else {
         this.props.navigator.replace({
           component: MyDeals,
+        });
+      }
+      if (params && params.code) {
+        const stripeCode = params.code;
+
+        this.props.navigator.replace({
+          component: SelectPayment,
+        });
+        this.props.navigator.push({
+          component: SelectPayment,
+          passProps: {
+            stripeCode
+          },
         });
       }
     }

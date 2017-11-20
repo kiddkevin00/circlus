@@ -1,5 +1,7 @@
+import actionCreator from '../actioncreators/payment';
 import stripe from 'tipsi-stripe';
 import { SelectPayment as SelectPaymentBlock } from 'react-native-checkout';
+import { firebaseConnect } from 'react-redux-firebase';
 import {
   Container,
   Header,
@@ -22,7 +24,10 @@ import {
 } from 'native-base';
 import {
   Alert,
+  Linking
 } from 'react-native';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -36,6 +41,7 @@ class SelectPayment extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    dispatchCreateBankAccount: PropTypes.func.isRequired,
   };
 
   state = {
@@ -106,6 +112,12 @@ class SelectPayment extends Component {
     Alert.alert('Info', 'Selected Payment source:', paymentSource);
   }
 
+  _connectToStripe = async () => {
+    const url = 'https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://circlus.herokuapp.com&client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
+    Linking.openURL(url)
+     .catch(err => console.error('An error occurred', err));
+  }
+
   render() {
     return (
       <Container>
@@ -129,6 +141,9 @@ class SelectPayment extends Component {
             addCardHandler={ this._handleAddCard }
             selectPaymentHandler={ this._handleSelectPyment }
           />
+          <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this.connectToStripe.bind(this, {}) }>
+            <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Add Bank Account</Text>
+          </Button>
         </Content>
       </Container>
     );
@@ -136,4 +151,20 @@ class SelectPayment extends Component {
 
 }
 
-export { SelectPayment as default };
+function mapStateToProps(state) {
+  return {
+
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    ddispatchCreateBankAccount() {
+      dispatch(actionCreator.createBankAccount());
+    },
+  };
+}
+
+export default compose(
+  firebaseConnect([]),
+  connect(mapStateToProps, mapDispatchToProps),
+)(SelectPayment);

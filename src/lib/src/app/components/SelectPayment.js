@@ -1,33 +1,25 @@
-import actionCreator from '../actioncreators/payment';
+import HttpProxy from '../proxies/HttpProxy';
+import StandardResponseWrapper from '../utils/StandardResponseWrapper';
 import stripe from 'tipsi-stripe';
 import { SelectPayment as SelectPaymentBlock } from 'react-native-checkout';
-import { firebaseConnect } from 'react-redux-firebase';
+
 import {
   Container,
   Header,
-  Content,
-  Footer,
-  FooterTab,
-  Card,
-  CardItem,
   Left,
   Body,
   Right,
   Title,
-  Grid,
-  Row,
-  Col,
-  Thumbnail,
   Button,
   Text,
   Icon,
+  Content,
 } from 'native-base';
 import {
   Alert,
-  Linking
+  Linking,
+  AsyncStorage,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -41,8 +33,11 @@ class SelectPayment extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    dispatchCreateBankAccount: PropTypes.func.isRequired,
-    stripeCode: PropTypes.string
+    stripeCode: PropTypes.string,
+  };
+
+  static defaultProps = {
+    stripeCode: '',
   };
 
   state = {
@@ -55,9 +50,28 @@ class SelectPayment extends Component {
 
   componentDidMount() {
     if (this.props.stripeCode) {
-      console.log('hiiiiiiii here I ammmm', this.props.stripeCode)
-      //TODO: call backend route
+      this._handleStripeAddAccount(this.props.stripeCode);
     }
+  }
+  _handleStripeAddAccount = async (stripeCode) => {
+    const httpClient = HttpProxy.createInstance();
+
+    try {
+      const requesyBody = { stripeCode };
+      const { data } = await httpClient.post('/bank-account/setup', requesyBody);
+
+      if (StandardResponseWrapper.verifyFormat(data) &&
+      StandardResponseWrapper.deserialize(data).getNthData(0).success) {
+        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripe_user_id;
+
+        //await AsyncStorage.setItem('@LocalDatabase:stripeUserId', stripeUserId);
+      } else {
+        Alert.alert('Error', 'Please try it again.');
+      }
+    } catch (err) {
+      Alert.alert('Error', `Please try it again.\n${err}`);
+    }
+
   }
 
   _handleAddCard = async () => {
@@ -72,7 +86,7 @@ class SelectPayment extends Component {
     };
 
     try {
-      const response = await stripe.paymentRequestWithCardForm(options)
+      const response = await stripe.paymentRequestWithCardForm(options);
 
       this.setState({
         paymentSources: [
@@ -150,7 +164,7 @@ class SelectPayment extends Component {
             addCardHandler={ this._handleAddCard }
             selectPaymentHandler={ this._handleSelectPyment }
           />
-        <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._connectToStripe } >
+          <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._connectToStripe } >
             <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Add Bank Account</Text>
           </Button>
         </Content>
@@ -160,20 +174,4 @@ class SelectPayment extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-
-  };
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    ddispatchCreateBankAccount() {
-      dispatch(actionCreator.createBankAccount());
-    },
-  };
-}
-
-export default compose(
-  firebaseConnect([]),
-  connect(mapStateToProps, mapDispatchToProps),
-)(SelectPayment);
+export { SelectPayment as default };

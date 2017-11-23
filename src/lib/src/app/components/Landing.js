@@ -1,6 +1,9 @@
 import DealDetail from './DealDetail';
 import MyDeals from './MyDeals';
+import Profile from './Profile';
 import Login from './Login';
+import HttpProxy from '../proxies/HttpProxy';
+import StandardResponseWrapper from '../utils/StandardResponseWrapper';
 import { Toast } from 'native-base';
 import {
   Linking,
@@ -85,11 +88,39 @@ class Landing extends Component {
           buttonText: 'Dismiss',
           duration: 3000,
         });
+      } else if (params && params.code) {
+        await this._handleStripeAddAccount(params.code);
+
+        this.props.navigator.push({
+          component: Profile,
+        });
+      } else if (params && params.error) {
+        Alert.alert('Error', `Please try again.\n${global.decodeURIComponent(params.error_description)}`);
       } else {
         this.props.navigator.replace({
           component: MyDeals,
         });
       }
+    }
+  }
+
+  // TODO
+  _handleStripeAddAccount = async (stripeCode) => {
+    const httpClient = HttpProxy.createInstance();
+
+    try {
+      const requesyBody = { stripeCode };
+      const { data } = await httpClient.post('/bank-account/setup', requesyBody);
+
+      if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {
+        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripe_user_id;
+
+        await AsyncStorage.setItem('@LocalDatabase:stripeUserId', stripeUserId);
+      } else {
+        Alert.alert('Error', `Please try it again.\n${JSON.stringify(data, null, 2)}`);
+      }
+    } catch (err) {
+      Alert.alert('Error', `Please try it again.\n${err.message}`);
     }
   }
 

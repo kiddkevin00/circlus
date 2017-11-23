@@ -30,7 +30,7 @@ class Landing extends Component {
         }
       })
       .catch((err) => {
-        Alert.alert('Error', `Getting launch URL failed: ${err.message}`);
+        Alert.alert('Error', `Getting launch URL failed.\n${err.message}`);
       });
 
     Linking.addEventListener('url', this._handleOpenFromURL);

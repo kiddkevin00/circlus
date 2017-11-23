@@ -27,7 +27,7 @@ const myDealsActionCreator = {
           payload: { myDeals },
         });
       } catch (err) {
-        Alert.alert('Error', `Retrieving data fails: ${err.message}`);
+        Alert.alert('Error', `Retrieving data fails.\n${err.message}`);
       }
     };
   },

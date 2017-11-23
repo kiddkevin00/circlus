@@ -67,7 +67,7 @@ class SelectPayment extends Component {
         ],
       });
     } catch (err) {
-      Alert.alert('Error', `Payment process failed: ${err.message}`);
+      Alert.alert('Error', `Please try it again.\n${err.message}`);
     }
   }
 
@@ -98,7 +98,7 @@ class SelectPayment extends Component {
     } catch (err) {
       stripe.cancelApplePayRequest();
 
-      Alert.alert('Error', `Apple pay error: ${err.message}.`);
+      Alert.alert('Error', `Please try it again.\n${err.message}.`);
     }
   }
 

@@ -84,7 +84,7 @@ class DealDetail extends Component {
         await Linking.openURL(url);
       }
     } catch (err) {
-      Alert.alert('Error', `Showing direction failed: ${err.message}`);
+      Alert.alert('Error', `Please try it again.\n${err.message}`);
     }
   }
 

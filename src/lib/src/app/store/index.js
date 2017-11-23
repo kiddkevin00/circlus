@@ -11,7 +11,7 @@ const config = { userProfile: 'users' };
 function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, compose(
     applyMiddleware(thunkMiddleware),
-    applyMiddleware(loggerMiddleware),
+    //applyMiddleware(loggerMiddleware),
     reactReduxFirebase(firebaseProxy, config),
     (global.__DEV__ && global.__REDUX_DEVTOOLS_EXTENSION__) ?
       global.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f,

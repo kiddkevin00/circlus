@@ -53,10 +53,10 @@ class AddCard extends Component {
           component: MyDeals,
         });
       } else {
-        Alert.alert('Error', 'Please try it again.');
+        Alert.alert('Error', `Please try it again.\n${JSON.stringify(data, null, 2)}`);
       }
     } catch (err) {
-      Alert.alert('Error', `Please try it again.\n${err}`);
+      Alert.alert('Error', `Please try it again.\n${err.message}`);
     }
   }
 
@@ -87,7 +87,7 @@ class AddCard extends Component {
     } catch (err) {
       stripe.cancelApplePayRequest();
 
-      Alert.alert('Error', `Apple pay error: ${err.message}.`);
+      Alert.alert('Error', `Please try it again.\n${err.message}`);
     }
   }
 

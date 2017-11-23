@@ -1,5 +1,3 @@
-import HttpProxy from '../proxies/HttpProxy';
-import StandardResponseWrapper from '../utils/StandardResponseWrapper';
 import stripe from 'tipsi-stripe';
 import { SelectPayment as SelectPaymentBlock } from 'react-native-checkout';
 
@@ -17,8 +15,6 @@ import {
 } from 'native-base';
 import {
   Alert,
-  Linking,
-  AsyncStorage,
 } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -33,13 +29,8 @@ class SelectPayment extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    stripeCode: PropTypes.string,
   };
-
-  static defaultProps = {
-    stripeCode: '',
-  };
-
+  
   state = {
     paymentSources: [
       { last4: '1234', brand: 'American Express', token: 'tok_1' },
@@ -47,32 +38,6 @@ class SelectPayment extends Component {
       { last4: '2345', brand: 'Master Card', token: 'tok_3' },
     ],
   };
-
-  componentDidMount() {
-    if (this.props.stripeCode) {
-      this._handleStripeAddAccount(this.props.stripeCode);
-    }
-  }
-  _handleStripeAddAccount = async (stripeCode) => {
-    const httpClient = HttpProxy.createInstance();
-
-    try {
-      const requesyBody = { stripeCode };
-      const { data } = await httpClient.post('/bank-account/setup', requesyBody);
-
-      if (StandardResponseWrapper.verifyFormat(data) &&
-      StandardResponseWrapper.deserialize(data).getNthData(0).success) {
-        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripe_user_id;
-
-        //await AsyncStorage.setItem('@LocalDatabase:stripeUserId', stripeUserId);
-      } else {
-        Alert.alert('Error', 'Please try it again.');
-      }
-    } catch (err) {
-      Alert.alert('Error', `Please try it again.\n${err}`);
-    }
-
-  }
 
   _handleAddCard = async () => {
     const options = {
@@ -134,13 +99,6 @@ class SelectPayment extends Component {
     Alert.alert('Info', 'Selected Payment source:', paymentSource);
   }
 
-  _connectToStripe = () => {
-    const url = 'https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://circlus.herokuapp.com&client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
-
-    Linking.openURL(url)
-     .catch((err) => Alert.alert('An error occurred', err));
-  }
-
   render() {
     return (
       <Container>
@@ -164,9 +122,6 @@ class SelectPayment extends Component {
             addCardHandler={ this._handleAddCard }
             selectPaymentHandler={ this._handleSelectPyment }
           />
-          <Button style={ { backgroundColor: '#6699ff' } } full onPress={ this._connectToStripe } >
-            <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Add Bank Account</Text>
-          </Button>
         </Content>
       </Container>
     );

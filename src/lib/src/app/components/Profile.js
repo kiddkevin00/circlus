@@ -22,6 +22,7 @@ import {
 } from 'native-base';
 import {
   Alert,
+  Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -49,6 +50,13 @@ class Profile extends Component {
     } else {
       await this.props.dispatchLogout();
     }
+  }
+
+  _connectWithStripe = async () => {
+    const url = 'https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://circlus.herokuapp.com&client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
+
+    await Linking.openURL(url)
+     .catch((err) => Alert.alert('An error occurred', err));
   }
 
   render() {
@@ -141,6 +149,20 @@ class Profile extends Component {
               </Left>
               <Body>
                 <Text>About Us</Text>
+              </Body>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+            </ListItem>
+            <ListItem itemDivider>
+              <Text>Work With Us</Text>
+            </ListItem>
+            <ListItem last icon button onPress={ this._connectWithStripe }>
+              <Left>
+                <Icon active name="cash" />
+              </Left>
+              <Body>
+                <Text>Setup Bank Account</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />

@@ -1,24 +1,17 @@
 import stripe from 'tipsi-stripe';
 import { SelectPayment as SelectPaymentBlock } from 'react-native-checkout';
+
 import {
   Container,
   Header,
-  Content,
-  Footer,
-  FooterTab,
-  Card,
-  CardItem,
   Left,
   Body,
   Right,
   Title,
-  Grid,
-  Row,
-  Col,
-  Thumbnail,
   Button,
   Text,
   Icon,
+  Content,
 } from 'native-base';
 import {
   Alert,
@@ -37,7 +30,7 @@ class SelectPayment extends Component {
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
-
+  
   state = {
     paymentSources: [
       { last4: '1234', brand: 'American Express', token: 'tok_1' },
@@ -58,7 +51,7 @@ class SelectPayment extends Component {
     };
 
     try {
-      const response = await stripe.paymentRequestWithCardForm(options)
+      const response = await stripe.paymentRequestWithCardForm(options);
 
       this.setState({
         paymentSources: [

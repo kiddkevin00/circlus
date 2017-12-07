@@ -1,4 +1,6 @@
-import AddCard from './AddCard';
+import Checkout from './Checkout';
+import actionCreator from '../actioncreators/billingSummary';
+import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import {
   Container,
   Header,
@@ -17,10 +19,9 @@ import {
   Text,
   Icon,
 } from 'native-base';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { View } from 'react-native'
 import PropTypes from 'prop-types';
-import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 
 
 class BillingSummary extends Component {
@@ -28,30 +29,37 @@ class BillingSummary extends Component {
   static propTypes = {
     discount: PropTypes.number.isRequired,
 
+    dispatchInit: PropTypes.func.isRequired,
+    dispatchSetBillAmountString: PropTypes.func.isRequired,
+    dispatchSetTipPercentage: PropTypes.func.isRequired,
+    billAmountString: PropTypes.string.isRequired,
+    billAmount: PropTypes.number.isRequired,
+    tipPercentage: PropTypes.number,
+    startValidatingForm: PropTypes.bool.isRequired,
+
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   static defaultProps = {
-    discount: 33, // TODO
+    tipPercentage: undefined,
   };
 
-  state = {
-    tipPercentage: undefined,
-    billAmount: 0,
-    startValidating: false,
-  };
+  componentDidMount() {
+    this.props.dispatchInit(this.props.discount);
+  }
 
   _handleCheckout = () => {
     this.props.navigator.push({
-      component: AddCard,
-      passProps: { totalAmount: this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0)) },
+      component: Checkout,
     });
   }
 
+  _onChange = (event) => {
+    this.props.dispatchSetBillAmountString(event.nativeEvent.text);
+  }
+
   _onPick = (value) => {
-    this.setState({
-      tipPercentage: value,
-    });
+    this.props.dispatchSetTipPercentage(value);
   }
 
   render() {
@@ -73,23 +81,23 @@ class BillingSummary extends Component {
         </Header>
         <Content padder>
           <Form>
-            <Item stackedLabel error={ this.state.startValidating && !this.state.billAmount }>
+            <Item stackedLabel error={ this.props.startValidatingForm && !this.props.billAmount }>
               <Label>Enter Bill Amount</Label>
-              <Input autoFocus keyboardType="numeric" onChange={ (event) => this.setState({ billAmount: Number(event.nativeEvent.text), startValidating: true }) } />
+              <Input autoFocus keyboardType="numeric" value={ this.props.billAmountString } onChange={ this._onChange } />
             </Item>
             <Item style={ { borderBottomWidth: 0 } } fixedLabel>
               <Label>{ this.props.discount }% Off</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (this.props.discount / 100)) ? (this.state.billAmount * (this.props.discount / 100)).toFixed(2) : '    -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.props.billAmount * (this.props.discount / 100)) ? (this.props.billAmount * (this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
             <Item style={ { borderBottomWidth: 0, marginBottom: 20 } } fixedLabel>
               <Label style={ { fontWeight: 'bold' } }>Subtotal</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100)) ? (this.state.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '    -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.props.billAmount * (1 - this.props.discount / 100)) ? (this.props.billAmount * (1 - this.props.discount / 100)).toFixed(2) : '    -'}` } />
             </Item>
             <Picker
               style={ { borderWidth: 1, borderColor: '#D9D5DC', width: '100%' } }
               mode="dropdown"
               placeholder="Select Tip Amount                        --"
-              selectedValue={ this.state.tipPercentage }
+              selectedValue={ this.props.tipPercentage }
               onValueChange={ this._onPick }
               iosHeader="Select Tip"
             >
@@ -103,14 +111,14 @@ class BillingSummary extends Component {
             </Picker>
             <Item style={ { borderBottomWidth: 0, marginTop: 30 } } fixedLabel>
               <Label style={ { fontWeight: 'bold', fontSize: 20 } }>Total</Label>
-              <Input disabled value={ `${inputSpaces}${(this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))) ? (this.state.billAmount * (1 - this.props.discount / 100) * (1 + (this.state.tipPercentage || 0))).toFixed(2) : '    -'}` } />
+              <Input disabled value={ `${inputSpaces}${(this.props.billAmount * (1 - this.props.discount / 100) * (1 + (this.props.tipPercentage || 0))) ? (this.props.billAmount * (1 - this.props.discount / 100) * (1 + (this.props.tipPercentage || 0))).toFixed(2) : '    -'}` } />
             </Item>
           </Form>
         </Content>
         <Footer>
           <Container style={ { height: 'auto' } }>
             <KeyboardAccessoryView alwaysVisible={ true }>
-              <Button style={ { backgroundColor: '#6699ff', height: 55 } } full onPress={ this._handleCheckout }>
+              <Button style={ { backgroundColor: '#6699ff', height: 55 } } full onPress={ this._handleCheckout } disabled={ !this.props.billAmount }>
                 <Text style={ { fontSize: 17, color: 'white', fontWeight: 'bold' } }>Pay</Text>
               </Button>
             </KeyboardAccessoryView>
@@ -122,4 +130,28 @@ class BillingSummary extends Component {
 
 }
 
-export { BillingSummary as default };
+function mapStateToProps(state) {
+  return {
+    billAmountString: state.billingSummary.billAmountString,
+    billAmount: Number(state.billingSummary.billAmountString),
+    tipPercentage: state.billingSummary.tipPercentage,
+    startValidatingForm: state.billingSummary.startValidatingForm,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchInit(discount) {
+      dispatch(actionCreator.init(discount));
+    },
+
+    dispatchSetBillAmountString(billAmountString) {
+      dispatch(actionCreator.setBillAmountString(billAmountString));
+    },
+
+    dispatchSetTipPercentage(tipPercentage) {
+      dispatch(actionCreator.setTipPercentage(tipPercentage));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BillingSummary);

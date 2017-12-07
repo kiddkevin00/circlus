@@ -19,15 +19,17 @@ const loginActionCreator = {
             type: actionTypes.LOGIN.LOGIN_CANCEL,
           });
         } else {
-          this._facebookPostLogin(dispatch);
+          await this._facebookPostLogin(dispatch);
         }
       } catch (error) {
+        const errorMsg = `Facebook login failed.\n${error.message}`;
+
         dispatch({
           type: actionTypes.LOGIN.LOGIN_FAILURE,
-          payload: {
-            errorMsg: `Facebook login failed: ${error}.`,
-          },
+          payload: { errorMsg },
         });
+
+        throw new Error(errorMsg);
       }
     };
   },
@@ -55,12 +57,14 @@ const loginActionCreator = {
         type: actionTypes.LOGIN.LOGIN_SUCCESS,
       });
     } catch (err) {
+      const errorMsg = `Facebook login with Firebase failed.\n${err.message}`;
+
       dispatch({
         type: actionTypes.LOGIN.LOGIN_FAILURE,
-        payload: {
-          errorMsg: `Facebook login with Firebase failed: ${err.message}`,
-        },
+        payload: { errorMsg },
       });
+
+      throw new Error(errorMsg);
     }
   },
 };

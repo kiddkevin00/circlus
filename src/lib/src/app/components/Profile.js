@@ -36,36 +36,46 @@ class Profile extends Component {
     dispatchFacebookLogin: PropTypes.func.isRequired,
     dispatchLogout: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    isErrorVisible: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string.isRequired,
 
-    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    influencers: PropTypes.array.isRequired,
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   _handleAuthentication = async () => {
-    if (this.props.auth.isEmpty) {
-      await this.props.dispatchFacebookLogin();
-    } else {
-      await this.props.dispatchLogout();
+    try {
+      if (this.props.auth.isEmpty) {
+        await this.props.dispatchFacebookLogin();
+      } else {
+        await this.props.dispatchLogout();
+      }
+    } catch (err) {
+      Alert.alert('Try it again', err.message);
     }
   }
 
   _connectWithStripe = async () => {
-    const url = 'https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://circlus.herokuapp.com&client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
+    let url = 'https://connect.stripe.com/express/oauth/authorize?client_id=ca_BmEBTIzK9B8OFWHEwSViSTBf5r4KoN8U';
 
-    await Linking.openURL(url)
-     .catch((err) => Alert.alert('An error occurred', err));
+    if (this.props.auth.email) {
+      url += `&email=${this.props.auth.email}`;
+    }
+
+    try {
+      await Linking.openURL(url);
+    } catch (err) {
+      Alert.alert('Try it again', `Something went wrong while connecting to Stripe.\n${err.message}`);
+    }
+  }
+
+  _isAnInfluencer() {
+    return !!this.props.influencers.find((influencer) => influencer.email === this.props.auth.email);
   }
 
   render() {
     if (!this.props.auth.isLoaded) {
       return null;
-    }
-
-    if (this.props.isErrorVisible) {
-      Alert.alert('Error', `Please try it again.\n${this.props.errorMessage}`);
     }
 
     return (
@@ -93,7 +103,7 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem last icon >
+            <ListItem last icon>
               <Left>
                 <Icon active name="contacts" />
               </Left>
@@ -154,20 +164,22 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem itemDivider>
-              <Text>Work With Us</Text>
-            </ListItem>
-            <ListItem last icon button onPress={ this._connectWithStripe }>
-              <Left>
-                <Icon active name="cash" />
-              </Left>
-              <Body>
-                <Text>Setup Bank Account</Text>
-              </Body>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
+            { this._isAnInfluencer() && [
+              <ListItem key="work-with-us" itemDivider>
+                <Text>Work With Us</Text>
+              </ListItem>,
+              <ListItem key="setup-bank-account" last icon button onPress={ this._connectWithStripe }>
+                <Left>
+                  <Icon active name="cash" />
+                </Left>
+                <Body>
+                  <Text>Setup Bank Account</Text>
+                </Body>
+                <Right>
+                  <Icon name="arrow-forward" />
+                </Right>
+              </ListItem>,
+            ] }
           </List>
           { this.props.isLoading && <Spinner color="blue" /> }
         </Content>
@@ -200,24 +212,27 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.profile.isLoading,
-    isErrorVisible: state.profile.error.isVisiable,
-    errorMessage: state.profile.error.message,
+    influencers: (state.firebase.ordered && state.firebase.ordered.nyc &&
+      Array.isArray(state.firebase.ordered.nyc.influencers)) ?
+      state.firebase.ordered.nyc.influencers.map((influencer) => influencer.value) : [],
     auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     dispatchFacebookLogin() {
-      dispatch(actionCreator.facebookLogin());
+      return dispatch(actionCreator.facebookLogin());
     },
 
     dispatchLogout() {
-      dispatch(actionCreator.logout());
+      return dispatch(actionCreator.logout());
     },
   };
 }
 
 export default compose(
-  firebaseConnect([]),
+  firebaseConnect([
+    { path: '/nyc/influencers' }
+  ]),
   connect(mapStateToProps, mapDispatchToProps),
 )(Profile);

@@ -30,7 +30,7 @@ class SelectPayment extends Component {
   static propTypes = {
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
-  
+
   state = {
     paymentSources: [
       { last4: '1234', brand: 'American Express', token: 'tok_1' },
@@ -60,7 +60,7 @@ class SelectPayment extends Component {
         ],
       });
     } catch (err) {
-      Alert.alert('Error', `Please try it again.\n${err.message}`);
+      Alert.alert('Try it again', `Something went wrong while tokenizing payment information.\n${err.message}`);
     }
   }
 
@@ -91,12 +91,12 @@ class SelectPayment extends Component {
     } catch (err) {
       stripe.cancelApplePayRequest();
 
-      Alert.alert('Error', `Please try it again.\n${err.message}.`);
+      Alert.alert('Try it again', `Something went wrong while making Apple Pay.\n${err.message}`);
     }
   }
 
   _handleSelectPyment = (paymentSource) => {
-    Alert.alert('Info', 'Selected Payment source:', paymentSource);
+    Alert.alert('Info', `Selected Payment source: ${paymentSource}`);
   }
 
   render() {

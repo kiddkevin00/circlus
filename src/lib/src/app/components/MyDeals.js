@@ -25,7 +25,6 @@ import {
 } from 'native-base';
 import {
   Alert,
-  Share,
   Image,
   Dimensions,
 } from 'react-native';
@@ -40,6 +39,7 @@ class MyDeals extends Component {
 
   static propTypes = {
     dispatchFetchMyDeals: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     myDeals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -48,7 +48,10 @@ class MyDeals extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatchFetchMyDeals();
+    this.props.dispatchFetchMyDeals()
+      .catch((err) => {
+        Alert.alert('Try it again', err.message);
+      });
   }
 
   _checkoutDealDetail(deal) {
@@ -100,17 +103,13 @@ class MyDeals extends Component {
               <Button
                 iconLeft
                 transparent
-                onPress={ () => Share.share({
-                  title: deal.name,
-                  message: `Check out this deal - ${deal.name}:\n` +
-                    `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-                    'Click the link below to download Circlus:\n' +
-                    'https://itunes.apple.com/us/app/circlus/',
-                  //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
+                onPress={ () => this.props.navigator.push({
+                  component: BillingSummary,
+                  passProps: { discount: deal.discount.value },
                 }) }
               >
-                <Icon style={ { fontSize: 22, color: '#6699ff' } } name="share" />
-                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Share</Text>
+                <Icon style={ { fontSize: 22, color: '#6699ff' } } name="cart" />
+                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Checkout</Text>
               </Button>
               <Text>&nbsp;</Text>
               <Button iconLeft transparent onPress={ () => Alert.alert('Info', 'The deal has been removed.') }>
@@ -131,7 +130,7 @@ class MyDeals extends Component {
   render() {
     const deals = this.props.myDeals
       .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
-      .map((myDeal) => this.props.deals.find((deal) => deal._id === myDeal.id))
+      .map((myDeal) => this.props.deals.find((deal) => deal._id === myDeal.dealId))
       .filter((deal) => deal && !moment().isAfter(deal.when.endTimestamp));
 
     return (
@@ -144,7 +143,7 @@ class MyDeals extends Component {
           <Right />
         </Header>
         <Content>
-          { deals.length === 0 && <Spinner color="blue" /> }
+          { this.props.isLoading && <Spinner color="blue" /> }
           <List
             dataArray={ deals }
             renderRow={ this._renderDeal }
@@ -178,6 +177,7 @@ class MyDeals extends Component {
 
 function mapStateToProps(state) {
   return {
+    isLoading: state.myDeals.isLoading,
     myDeals: state.myDeals.myDeals,
     deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
       Array.isArray(state.firebase.ordered.nyc.deals)) ?
@@ -187,7 +187,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     dispatchFetchMyDeals() {
-      dispatch(actionCreator.fetchMyDeals());
+      return dispatch(actionCreator.fetchMyDeals());
     },
   };
 }

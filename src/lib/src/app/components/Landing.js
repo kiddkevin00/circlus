@@ -32,9 +32,9 @@ class Landing extends Component {
           });
         }
       })
-      .catch((err) => {
-        Alert.alert('Error', `Getting launch URL failed.\n${err.message}`);
-      });
+      .catch((err) => setTimeout(() => {
+        Alert.alert('Try it again', `Getting launch URL failed.\n${err.message}`);
+      }, 500));
 
     Linking.addEventListener('url', this._handleOpenFromURL);
   }
@@ -50,24 +50,7 @@ class Landing extends Component {
 
     if (path) {
       if (params && params.deal) {
-        const dealId = params.deal;
-        const myDealsString = await AsyncStorage.getItem('@LocalDatabase:myDeals');
-        let myDeals;
-
-        if (myDealsString) {
-          myDeals = JSON.parse(myDealsString);
-        } else {
-          myDeals = [];
-        }
-
-        if (!myDeals.find((deal) => deal.id === dealId)) {
-          myDeals.unshift({
-            id: dealId,
-            dateAdded: new Date().valueOf(),
-          });
-        }
-
-        await AsyncStorage.setItem('@LocalDatabase:myDeals', JSON.stringify(myDeals));
+        await this._handleNewDeal(params.deal, params.influencer, params.merchant);
 
         this.props.navigator.replace({
           component: MyDeals,
@@ -75,7 +58,7 @@ class Landing extends Component {
         this.props.navigator.push({
           component: DealDetail,
           passProps: {
-            dealId,
+            dealId: params.deal,
             footer: {
               isVisiable: false,
             },
@@ -88,14 +71,12 @@ class Landing extends Component {
           buttonText: 'Dismiss',
           duration: 3000,
         });
-      } else if (params && params.code) {
-        await this._handleStripeAddAccount(params.code);
+      } else if (params && (params.code || params.error)) {
+        await this._handleBankAccountSetup(params.error, params.code, params);
 
-        this.props.navigator.push({
+        this.props.navigator.replace({
           component: Profile,
         });
-      } else if (params && params.error) {
-        Alert.alert('Error', `Please try again.\n${global.decodeURIComponent(params.error_description)}`);
       } else {
         this.props.navigator.replace({
           component: MyDeals,
@@ -104,23 +85,51 @@ class Landing extends Component {
     }
   }
 
-  // TODO
-  _handleStripeAddAccount = async (stripeCode) => {
+  // [TODO] Use action creator instead.
+  _handleNewDeal = async (dealId, influencerStripeUserId, merchantStripeUserId) => {
+    const myDealsString = await AsyncStorage.getItem('@LocalDatabase:myDeals');
+    let myDeals;
+
+    if (myDealsString) {
+      myDeals = JSON.parse(myDealsString);
+    } else {
+      myDeals = [];
+    }
+
+    if (!myDeals.find((deal) => deal.id === dealId)) {
+      myDeals.unshift({
+        dealId,
+        influencerStripeUserId,
+        merchantStripeUserId,
+        dateAdded: new Date().valueOf(),
+      });
+    }
+
+    await AsyncStorage.setItem('@LocalDatabase:myDeals', JSON.stringify(myDeals));
+  }
+
+  // [TODO] Use action creator instead.
+  _handleBankAccountSetup = async (error, authorizationCode, params) => {
+    if (error) {
+      setTimeout(() => Alert.alert('Try it again', `Something went wrong.\n${global.decodeURIComponent(params.error_description || error)}`), 500);
+      return;
+    }
+
     const httpClient = HttpProxy.createInstance();
 
     try {
-      const requesyBody = { stripeCode };
+      const requesyBody = { authorizationCode };
       const { data } = await httpClient.post('/bank-account/setup', requesyBody);
 
       if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {
-        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripe_user_id;
+        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripeUserId;
 
         await AsyncStorage.setItem('@LocalDatabase:stripeUserId', stripeUserId);
       } else {
-        Alert.alert('Error', `Please try it again.\n${JSON.stringify(data, null, 2)}`);
+        setTimeout(() => Alert.alert('Try it again', `Invalid response received from server.\n${JSON.stringify(data, null, 2)}`, 500));
       }
     } catch (err) {
-      Alert.alert('Error', `Please try it again.\n${err.message}`);
+      setTimeout(() => Alert.alert('Try it again', `Processing payment fails.\n${err.message}`), 500);
     }
   }
 

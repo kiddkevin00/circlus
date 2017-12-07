@@ -15,7 +15,8 @@ const getErrorCodeAndMsg = (errors) => ({
     'Something went wrong while making HTTP requests.',
 });
 const extractErrorListFromResponse = (error) => (
-  error.response && error.response.data ? error.response.data.errors : error
+  (error.response && error.response.data) ?
+    (error.response.data.result && error.response.data.result.data) : error
 );
 const handleError = (error) => {
   if (Array.isArray(global.currentErrorStack)) {

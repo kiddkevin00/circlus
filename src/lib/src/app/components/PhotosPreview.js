@@ -86,7 +86,6 @@ class DealDetail extends Component {
     dealId: PropTypes.string.isRequired,
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
@@ -123,7 +122,6 @@ export default compose(
         deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
           Array.isArray(state.firebase.ordered.nyc.deals)) ?
           state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
-        auth: state.firebase.auth,
       };
     }
   )

@@ -1,7 +1,6 @@
 import actionTypes from '../actiontypes/';
 import {
   AsyncStorage,
-  Alert,
 } from 'react-native';
 
 
@@ -13,9 +12,8 @@ const myDealsActionCreator = {
       });
 
       try {
-        const myDealsString = await AsyncStorage.getItem('@LocalDatabase:myDeals');
-
         let myDeals;
+        const myDealsString = await AsyncStorage.getItem('@LocalDatabase:myDeals');
 
         if (myDealsString) {
           myDeals = JSON.parse(myDealsString);
@@ -27,7 +25,14 @@ const myDealsActionCreator = {
           payload: { myDeals },
         });
       } catch (err) {
-        Alert.alert('Error', `Retrieving data fails.\n${err.message}`);
+        const errorMsg = `Retrieving data fails.\n${err.message}`;
+
+        dispatch({
+          type: actionTypes.MY_DEALS.FETCH_MY_DEALS_FAILURE,
+          payload: { errorMsg },
+        });
+
+        throw new Error(errorMsg);
       }
     };
   },

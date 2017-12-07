@@ -38,8 +38,6 @@ class Login extends Component {
 
   static propTypes = {
     dispatchFacebookLogin: PropTypes.func.isRequired,
-    isErrorVisible: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string.isRequired,
 
     auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
@@ -55,16 +53,16 @@ class Login extends Component {
   }
 
   _handleFacebookLogin = async () => {
-    await this.props.dispatchFacebookLogin();
+    try {
+      await this.props.dispatchFacebookLogin();
+    } catch (err) {
+      Alert.alert('Try it again', err.message);
+    }
   }
 
   render() {
     if (!this.props.auth.isLoaded) {
       return null;
-    }
-
-    if (this.props.isErrorVisible) {
-      Alert.alert('Error', `Please try it again.\n${this.props.errorMessage}`);
     }
 
     const backgroundImageInlineStyle = {
@@ -142,20 +140,18 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   return {
-    isErrorVisible: state.login.error.isVisiable,
-    errorMessage: state.login.error.message,
     auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     dispatchFacebookLogin() {
-      dispatch(actionCreator.facebookLogin());
+      return dispatch(actionCreator.facebookLogin());
     },
   };
 }
 
 export default compose(
   firebaseConnect([]),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
 )(Login);

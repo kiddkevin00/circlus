@@ -2,6 +2,9 @@ import authActionTypes from '../actiontypes/auth';
 import loginActionTypes from '../actiontypes/login';
 import profileActionTypes from '../actiontypes/profile';
 import myDealsActionTypes from '../actiontypes/myDeals';
+import checkoutActionTypes from '../actiontypes/checkout';
+import billingSummaryActionTypes from '../actiontypes/billingSummary';
+import shareActionTypes from '../actiontypes/share';
 
 
 const allActionTypesPerSection = {
@@ -9,6 +12,9 @@ const allActionTypesPerSection = {
   PROFILE: profileActionTypes,
   LOGIN: loginActionTypes,
   MY_DEALS: myDealsActionTypes,
+  CHECKOUT: checkoutActionTypes,
+  BILLING_SUMMARY: billingSummaryActionTypes,
+  SHARE: shareActionTypes,
 };
 
 namespaceActionTypesPerSection(allActionTypesPerSection);

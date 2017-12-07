@@ -1,7 +1,7 @@
 import actionTypes from '../actiontypes/';
 
 
-const defaultErrorMsg = 'Something went wrong in Profile page';
+const defaultErrorMsg = 'Something went wrong in Checkout page';
 const initialState = {
   isLoading: false,
   error: {
@@ -10,23 +10,22 @@ const initialState = {
   },
 };
 
-function profileReducer(state = initialState, action) {
+function checkoutReducer(state = initialState, action) {
   const actionType = action.type;
   const actionPayload = action.payload;
 
   switch (actionType) {
-    case actionTypes.PROFILE.LOGIN_REQUEST:
-    case actionTypes.PROFILE.LOGOUT_REQUEST:
+    case actionTypes.CHECKOUT.CHECKOUT_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case actionTypes.PROFILE.LOGIN_SUCCESS:
-    case actionTypes.PROFILE.LOGIN_CANCEL:
-    case actionTypes.PROFILE.LOGOUT_SUCCESS:
-      return initialState;
-    case actionTypes.PROFILE.LOGIN_FAILURE:
-    case actionTypes.PROFILE.LOGOUT_FAILURE:
+    case actionTypes.CHECKOUT.CHECKOUT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.CHECKOUT.CHECKOUT_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -40,4 +39,4 @@ function profileReducer(state = initialState, action) {
   }
 }
 
-export { profileReducer as default };
+export { checkoutReducer as default };

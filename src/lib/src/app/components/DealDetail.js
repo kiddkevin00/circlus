@@ -1,5 +1,6 @@
 import PhotosPreview from './PhotosPreview';
 import WebViewWrapper from './common/WebViewWrapper';
+import shareActionCreator from '../actioncreators/share';
 import constants from '../constants/';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -24,7 +25,6 @@ import {
 } from 'native-base';
 import {
   Alert,
-  Share,
   Linking,
   TouchableHighlight,
   Image,
@@ -47,7 +47,10 @@ class DealDetail extends Component {
       onPress: PropTypes.func,
     }).isRequired,
 
+    dispatchShareDeal: PropTypes.func.isRequired,
+
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
@@ -84,7 +87,15 @@ class DealDetail extends Component {
         await Linking.openURL(url);
       }
     } catch (err) {
-      Alert.alert('Error', `Please try it again.\n${err.message}`);
+      Alert.alert('Try it again', `Something went wrong while opening map.\n${err.message}`);
+    }
+  }
+
+  _shareDeal = async (deal) => {
+    try {
+      await this.props.dispatchShareDeal(deal);
+    } catch (err) {
+      Alert.alert('Try it again', err.message);
     }
   }
 
@@ -214,14 +225,7 @@ class DealDetail extends Component {
           <Right>
             <Button
               transparent
-              onPress={ () => Share.share({
-                title: deal.name,
-                message: `Check out this deal - ${deal.name}:\n` +
-                  `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-                  'Click the link below to download Circlus:\n' +
-                  'https://itunes.apple.com/us/app/circlus/',
-                //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
-              }) }
+              onPress={ this._shareDeal.bind(this, deal) }
             >
               <Icon style={ { color: 'white' } } name="share" />
             </Button>
@@ -319,17 +323,25 @@ class DealDetail extends Component {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
+      Array.isArray(state.firebase.ordered.nyc.deals)) ?
+      state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
+    auth: state.firebase.auth,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchShareDeal(deal) {
+      return dispatch(shareActionCreator.shareDeal(deal));
+    },
+  };
+}
+
 export default compose(
   firebaseConnect([
     { path: '/nyc/deals' },
   ]),
-  connect(
-    function mapStateToProps(state) {
-      return {
-        deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
-          Array.isArray(state.firebase.ordered.nyc.deals)) ?
-          state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
-      };
-    }
-  )
+  connect(mapStateToProps, mapDispatchToProps),
 )(DealDetail);

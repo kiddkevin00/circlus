@@ -1,6 +1,7 @@
 import DealDetail from './DealDetail';
 import MyDeals from './MyDeals';
 import Profile from './Profile';
+import shareActionCreator from '../actioncreators/share';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
   Spinner,
@@ -23,7 +24,7 @@ import {
   Icon,
 } from 'native-base';
 import {
-  Share,
+  Alert,
   Image,
   Dimensions,
 } from 'react-native';
@@ -37,6 +38,8 @@ import moment from 'moment';
 class Deals extends Component {
 
   static propTypes = {
+    dispatchShareDeal: PropTypes.func.isRequired,
+
     influencers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -52,17 +55,18 @@ class Deals extends Component {
         footer: {
           isVisiable: true,
           text: 'Share Link Now',
-          onPress: () => Share.share({
-            title: deal.name,
-            message: `Check out this deal - ${deal._id}:\n` +
-              `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-              'Click the link below to download Circlus:\n' +
-              'https://itunes.apple.com/us/app/circlus/',
-            //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
-          }),
+          onPress: this._shareDeal.bind(this, deal),
         },
       },
     });
+  }
+
+  _shareDeal = async (deal) => {
+    try {
+      await this.props.dispatchShareDeal(deal);
+    } catch (err) {
+      Alert.alert('Try it again', err.message);
+    }
   }
 
   _isAnInfluencer() {
@@ -101,14 +105,7 @@ class Deals extends Component {
               <Button
                 iconLeft
                 transparent
-                onPress={ () => Share.share({
-                  title: deal.name,
-                  message: `Check out this deal - ${deal.name}:\n` +
-                    `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}\n\n` +
-                    'Click the link below to download Circlus:\n' +
-                    'https://itunes.apple.com/us/app/circlus/',
-                  //url: 'https://app.clickfunnels.com/for_domain/esall1.clickfunnels.com/optin15874949',
-                }) }
+                onPress={ this._shareDeal.bind(this, deal) }
               >
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="share" />
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Share</Text>
@@ -120,7 +117,7 @@ class Deals extends Component {
                 onPress={ () => {
                   Toast.show({
                     type: 'success',
-                    text: `CirclusNYC2017://?deal=${global.encodeURIComponent(deal._id)}`,
+                    text: `https://circlus.herokuapp.com/?deal=${global.encodeURIComponent(deal._id)}`,
                     position: 'bottom',
                     duration: 3000,
                   });
@@ -144,7 +141,46 @@ class Deals extends Component {
     let deals;
 
     if (this.props.auth.isEmpty || !this._isAnInfluencer()) {
-      deals = [];
+      deals = [(
+        <Card key="work-with-us">
+          <CardItem>
+            <Left>
+              <Body style={ { flexGrow: 15 } }>
+                <Text style={ { fontSize: 18, fontWeight: '500' } }>Interested in working with us?</Text>
+                <Text style={ { fontSize: 13, color: '#333' } } note>Sign up today to turn your Likes into Cash.</Text>
+              </Body>
+            </Left>
+          </CardItem>
+          <CardItem cardBody>
+            <Image
+              style={ { height: Dimensions.get('window').width - 35, width: '100%' } }
+              source={ require('../../../static/assets/images/work-with-us.jpg') }
+            />
+          </CardItem>
+          <CardItem>
+            <Left>
+              <Button
+                iconLeft
+                transparent
+                onPress={ () => {} }
+              >
+                <Icon style={ { fontSize: 22, color: '#6699ff' } } name="unlock" />
+                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Sign Up</Text>
+              </Button>
+              <Text>&nbsp;</Text>
+              <Button
+                iconLeft
+                transparent
+                onPress={ () => {} }
+              >
+                <Icon style={ { fontSize: 22, color: '#6699ff' } } name="information-circle" />
+                <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>More Info</Text>
+              </Button>
+            </Left>
+          </CardItem>
+          <CardItem style={ { paddingTop: 0.1, paddingBottom: 0.1 } } />
+        </Card>
+      )];
     } else {
       deals = this.props.deals
         .filter((deal) => !moment().isAfter(deal.when.endTimestamp))
@@ -161,11 +197,13 @@ class Deals extends Component {
           <Right />
         </Header>
         <Content>
-          { deals.length === 0 && <Spinner color="blue" /> }
-          <List
-            dataArray={ deals }
-            renderRow={ this._renderDeal }
-          />
+          { deals === 0 && <Spinner color="blue" /> }
+          { this._isAnInfluencer() ? (
+            <List
+              dataArray={ deals }
+              renderRow={ this._renderDeal }
+            />
+          ) : deals }
         </Content>
         <Footer>
           <FooterTab>
@@ -204,11 +242,18 @@ function mapStateToProps(state) {
     auth: state.firebase.auth,
   };
 }
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchShareDeal(deal) {
+      return dispatch(shareActionCreator.shareDeal(deal));
+    },
+  };
+}
 
 export default compose(
   firebaseConnect([
-    { path: '/nyc/deals' },
     { path: '/nyc/influencers' },
+    { path: '/nyc/deals' },
   ]),
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Deals);

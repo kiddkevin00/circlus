@@ -4,7 +4,7 @@
  * ```
  * {
  *   result: {
- *     meta: { name: "INSERT" },
+ *     meta: { name: "BULK_INSERT" },
  *     data: [
  *       {
  *         success: true,
@@ -22,6 +22,7 @@
  *       {
  *         success: false,
  *         status: "ERROR_NAME_1", // optional
+ *         message: "Something went wrong.", // optional
  *         detail: { // should be an object (standard error wrapper) or array (database result)
  *           _id: "003",
  *           email: "test3@test.com"
@@ -102,7 +103,7 @@ class StandardResponseWrapper {
   }
 
   static verifyFormat(obj) {
-    const data = obj && obj.result && obj.result.data;
+    const data = obj.result && obj.result.data;
 
     return !!Array.isArray(data);
   }

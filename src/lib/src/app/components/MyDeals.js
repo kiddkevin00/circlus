@@ -64,7 +64,12 @@ class MyDeals extends Component {
           text: 'Checkout',
           onPress: () => this.props.navigator.push({
             component: BillingSummary,
-            passProps: { discount: deal.discount.value },
+            passProps: {
+              dealId: deal._id,
+              influencerStripeUserId: deal.influencerStripeUserId,
+              merchantStripeUserId: deal.merchantStripeUserId,
+              discount: deal.discount.value,
+            },
           }),
         },
       },
@@ -105,7 +110,12 @@ class MyDeals extends Component {
                 transparent
                 onPress={ () => this.props.navigator.push({
                   component: BillingSummary,
-                  passProps: { discount: deal.discount.value },
+                  passProps: {
+                    dealId: deal._id,
+                    influencerStripeUserId: deal.influencerStripeUserId,
+                    merchantStripeUserId: deal.merchantStripeUserId,
+                    discount: deal.discount.value,
+                  },
                 }) }
               >
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="cart" />
@@ -130,8 +140,12 @@ class MyDeals extends Component {
   render() {
     const deals = this.props.myDeals
       .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
-      .map((myDeal) => this.props.deals.find((deal) => deal._id === myDeal.dealId))
-      .filter((deal) => deal && !moment().isAfter(deal.when.endTimestamp));
+      .map((myDeal) => ({
+        ...myDeal,
+        ...this.props.deals.find((deal) => deal._id === myDeal.dealId),
+      }))
+      .filter((deal) => deal && deal.when && deal.when.endTimestamp &&
+        !moment().isAfter(deal.when.endTimestamp));
 
     return (
       <Container>

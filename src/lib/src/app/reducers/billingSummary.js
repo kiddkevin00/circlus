@@ -7,6 +7,9 @@ const initialState = {
   billAmountString: '',
   totalAmount: 0,
   startValidatingForm: false,
+  dealId: undefined,
+  influencerStripeUserId: undefined,
+  merchantStripeUserId: undefined,
 };
 
 function billingSummaryReducer(state = initialState, action) {
@@ -18,21 +21,24 @@ function billingSummaryReducer(state = initialState, action) {
       return {
         ...initialState,
         discount: actionPayload.discount,
+        dealId: actionPayload.dealId,
+        influencerStripeUserId: actionPayload.influencerStripeUserId,
+        merchantStripeUserId: actionPayload.merchantStripeUserId,
       };
     case actionTypes.BILLING_SUMMARY.SET_BILL_AMOUNT:
       return {
         ...state,
         billAmountString: actionPayload.billAmountString,
-        totalAmount: Number(actionPayload.billAmountString) * (1 - state.discount / 100)
-          * (1 + (state.tipPercentage || 0)),
+        totalAmount: Number((Number(actionPayload.billAmountString) * (1 - state.discount / 100)
+          * (1 + (state.tipPercentage || 0))).toFixed(2)),
         startValidatingForm: true,
       };
     case actionTypes.BILLING_SUMMARY.SET_TIP_PERCENTAGE:
       return {
         ...state,
         tipPercentage: actionPayload.tipPercentage,
-        totalAmount: Number(state.billAmountString) * (1 - state.discount / 100)
-          * (1 + (actionPayload.tipPercentage || 0)),
+        totalAmount: Number((Number(state.billAmountString) * (1 - state.discount / 100)
+          * (1 + (actionPayload.tipPercentage || 0))).toFixed(2)),
         startValidatingForm: true,
       };
     default:

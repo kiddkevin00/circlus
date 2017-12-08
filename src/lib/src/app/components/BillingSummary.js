@@ -27,6 +27,9 @@ import PropTypes from 'prop-types';
 class BillingSummary extends Component {
 
   static propTypes = {
+    dealId: PropTypes.string.isRequired,
+    influencerStripeUserId: PropTypes.string.isRequired,
+    merchantStripeUserId: PropTypes.string.isRequired,
     discount: PropTypes.number.isRequired,
 
     dispatchInit: PropTypes.func.isRequired,
@@ -35,6 +38,7 @@ class BillingSummary extends Component {
     billAmountString: PropTypes.string.isRequired,
     billAmount: PropTypes.number.isRequired,
     tipPercentage: PropTypes.number,
+    totalAmount: PropTypes.number.isRequired,
     startValidatingForm: PropTypes.bool.isRequired,
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -45,7 +49,9 @@ class BillingSummary extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatchInit(this.props.discount);
+    const { dealId, influencerStripeUserId, merchantStripeUserId, discount } = this.props;
+
+    this.props.dispatchInit(discount, dealId, influencerStripeUserId, merchantStripeUserId);
   }
 
   _handleCheckout = () => {
@@ -111,7 +117,7 @@ class BillingSummary extends Component {
             </Picker>
             <Item style={ { borderBottomWidth: 0, marginTop: 30 } } fixedLabel>
               <Label style={ { fontWeight: 'bold', fontSize: 20 } }>Total</Label>
-              <Input disabled value={ `${inputSpaces}${(this.props.billAmount * (1 - this.props.discount / 100) * (1 + (this.props.tipPercentage || 0))) ? (this.props.billAmount * (1 - this.props.discount / 100) * (1 + (this.props.tipPercentage || 0))).toFixed(2) : '    -'}` } />
+              <Input disabled value={ `${inputSpaces}${this.props.totalAmount || '-'}` } />
             </Item>
           </Form>
         </Content>
@@ -134,14 +140,15 @@ function mapStateToProps(state) {
   return {
     billAmountString: state.billingSummary.billAmountString,
     billAmount: Number(state.billingSummary.billAmountString),
+    totalAmount: state.billingSummary.totalAmount,
     tipPercentage: state.billingSummary.tipPercentage,
     startValidatingForm: state.billingSummary.startValidatingForm,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchInit(discount) {
-      dispatch(actionCreator.init(discount));
+    dispatchInit(discount, dealId, influencerStripeUserId, merchantStripeUserId) {
+      dispatch(actionCreator.init(discount, dealId, influencerStripeUserId, merchantStripeUserId));
     },
 
     dispatchSetBillAmountString(billAmountString) {

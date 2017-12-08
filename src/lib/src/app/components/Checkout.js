@@ -30,7 +30,10 @@ class Checkout extends Component {
     billAmount: PropTypes.number.isRequired,
     tipPercentage: PropTypes.number,
     totalAmount: PropTypes.number.isRequired,
-
+    dealId: PropTypes.string.isRequired,
+    influencerStripeUserId: PropTypes.string.isRequired,
+    merchantStripeUserId: PropTypes.string.isRequired,
+    discount: PropTypes.number.isRequired,
 
     dispatchHandleToken: PropTypes.func.isRequired,
 
@@ -44,13 +47,17 @@ class Checkout extends Component {
   };
 
   _onToken = async (tokenId) => {
-    if (!this.props.auth.email) {
+    const { auth, dispatchHandleToken, totalAmount, dealId,
+            influencerStripeUserId, merchantStripeUserId } = this.props;
+
+    if (!auth.email) {
       Alert.alert('Action Required', 'Please sign in first to save your payment records.');
       return;
     }
 
     try {
-      await this.props.dispatchHandleToken(tokenId, this.props.totalAmount, this.props.auth.email)
+      await dispatchHandleToken(tokenId, totalAmount, auth.email, dealId, influencerStripeUserId,
+        merchantStripeUserId);
 
       this.props.navigator.push({
         component: MyDeals,
@@ -159,13 +166,16 @@ function mapStateToProps(state) {
     billAmount: Number(state.billingSummary.billAmountString),
     tipPercentage: state.billingSummary.tipPercentage,
     totalAmount: state.billingSummary.totalAmount,
+    dealId: state.billingSummary.dealId,
+    influencerStripeUserId: state.billingSummary.influencerStripeUserId,
+    merchantStripeUserId: state.billingSummary.merchantStripeUserId,
     auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchHandleToken(tokenId, totalAmount, email) {
-      return dispatch(actionCreator.handleToken(tokenId, totalAmount, email));
+    dispatchHandleToken(tokenId, totalAmount, email, dealId, influencerStripeUserId, merchantStripeUserId) {
+      return dispatch(actionCreator.handleToken(tokenId, totalAmount, email, dealId, influencerStripeUserId, merchantStripeUserId));
     },
   };
 }

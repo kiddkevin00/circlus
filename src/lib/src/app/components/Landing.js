@@ -96,7 +96,7 @@ class Landing extends Component {
       myDeals = [];
     }
 
-    if (!myDeals.find((deal) => deal.id === dealId)) {
+    if (!myDeals.find((myDeal) => myDeal.dealId === dealId)) {
       myDeals.unshift({
         dealId,
         influencerStripeUserId,

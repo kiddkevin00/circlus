@@ -194,8 +194,8 @@ class Profile extends Component {
               <Text>Share</Text>
             </Button>
             <Button vertical onPress={ () => {} }>
-              <Icon name="cash" />
-              <Text>Billing</Text>
+              <Icon name="people" />
+              <Text>Social</Text>
             </Button>
             <Button active vertical onPress={ () => {} }>
               <Icon active name="contact" />

@@ -31,9 +31,9 @@ class Checkout extends Component {
     tipPercentage: PropTypes.number,
     totalAmount: PropTypes.number.isRequired,
     dealId: PropTypes.string.isRequired,
+    dealName: PropTypes.string.isRequired,
     influencerStripeUserId: PropTypes.string.isRequired,
     merchantStripeUserId: PropTypes.string.isRequired,
-    discount: PropTypes.number.isRequired,
 
     dispatchHandleToken: PropTypes.func.isRequired,
 
@@ -47,7 +47,7 @@ class Checkout extends Component {
   };
 
   _onToken = async (tokenId) => {
-    const { auth, dispatchHandleToken, totalAmount, dealId,
+    const { auth, dispatchHandleToken, totalAmount, dealId, dealName,
             influencerStripeUserId, merchantStripeUserId } = this.props;
 
     if (!auth.email) {
@@ -56,8 +56,8 @@ class Checkout extends Component {
     }
 
     try {
-      await dispatchHandleToken(tokenId, totalAmount, auth.email, dealId, influencerStripeUserId,
-        merchantStripeUserId);
+      await dispatchHandleToken(tokenId, totalAmount, auth.email, dealId, dealName,
+        influencerStripeUserId, merchantStripeUserId);
 
       this.props.navigator.push({
         component: MyDeals,
@@ -167,6 +167,7 @@ function mapStateToProps(state) {
     tipPercentage: state.billingSummary.tipPercentage,
     totalAmount: state.billingSummary.totalAmount,
     dealId: state.billingSummary.dealId,
+    dealName: state.billingSummary.dealName,
     influencerStripeUserId: state.billingSummary.influencerStripeUserId,
     merchantStripeUserId: state.billingSummary.merchantStripeUserId,
     auth: state.firebase.auth,
@@ -174,8 +175,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchHandleToken(tokenId, totalAmount, email, dealId, influencerStripeUserId, merchantStripeUserId) {
-      return dispatch(actionCreator.handleToken(tokenId, totalAmount, email, dealId, influencerStripeUserId, merchantStripeUserId));
+    dispatchHandleToken(...params) {
+      return dispatch(actionCreator.handleToken(...params));
     },
   };
 }

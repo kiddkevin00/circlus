@@ -7,7 +7,7 @@ import {
 
 
 const checkoutActionCreator = {
-  handleToken(tokenId, totalAmount, email, dealId, influencerStripeUserId, merchantStripeUserId) {
+  handleToken(tokenId, totalAmount, email, dealId, dealName, influencerStripeUserId, merchantStripeUserId) {
     return async (dispatch/*, getState*/) => {
       dispatch({
         type: actionTypes.CHECKOUT.CHECKOUT_REQUEST,
@@ -16,7 +16,7 @@ const checkoutActionCreator = {
       const httpClient = HttpProxy.createInstance();
 
       try {
-        const requesyBody = { tokenId, email, dealId, influencerStripeUserId, merchantStripeUserId, chargeAmount: totalAmount };
+        const requesyBody = { tokenId, email, dealId, dealName, influencerStripeUserId, merchantStripeUserId, chargeAmount: totalAmount };
         const { data } = await httpClient.post('/payment/proceed', requesyBody);
 
         if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {

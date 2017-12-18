@@ -2,10 +2,10 @@ import actionTypes from '../actiontypes/';
 
 
 const billingSummaryActionCreator = {
-  init(discount, dealId, influencerStripeUserId, merchantStripeUserId) {
+  init(discount, dealId, dealName, influencerStripeUserId, merchantStripeUserId) {
     return {
       type: actionTypes.BILLING_SUMMARY.INIT,
-      payload: { discount, dealId, influencerStripeUserId, merchantStripeUserId },
+      payload: { discount, dealId, dealName, influencerStripeUserId, merchantStripeUserId },
     };
   },
 

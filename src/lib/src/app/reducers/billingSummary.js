@@ -8,6 +8,7 @@ const initialState = {
   totalAmount: 0,
   startValidatingForm: false,
   dealId: undefined,
+  dealName: undefined,
   influencerStripeUserId: undefined,
   merchantStripeUserId: undefined,
 };
@@ -22,6 +23,7 @@ function billingSummaryReducer(state = initialState, action) {
         ...initialState,
         discount: actionPayload.discount,
         dealId: actionPayload.dealId,
+        dealName: actionPayload.dealName,
         influencerStripeUserId: actionPayload.influencerStripeUserId,
         merchantStripeUserId: actionPayload.merchantStripeUserId,
       };

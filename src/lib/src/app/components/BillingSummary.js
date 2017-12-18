@@ -28,6 +28,7 @@ class BillingSummary extends Component {
 
   static propTypes = {
     dealId: PropTypes.string.isRequired,
+    dealName: PropTypes.string.isRequired,
     influencerStripeUserId: PropTypes.string.isRequired,
     merchantStripeUserId: PropTypes.string.isRequired,
     discount: PropTypes.number.isRequired,
@@ -49,9 +50,9 @@ class BillingSummary extends Component {
   };
 
   componentDidMount() {
-    const { dealId, influencerStripeUserId, merchantStripeUserId, discount } = this.props;
+    const { dealId, dealName, influencerStripeUserId, merchantStripeUserId, discount } = this.props;
 
-    this.props.dispatchInit(discount, dealId, influencerStripeUserId, merchantStripeUserId);
+    this.props.dispatchInit(discount, dealId, dealName, influencerStripeUserId, merchantStripeUserId);
   }
 
   _handleCheckout = () => {
@@ -147,8 +148,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchInit(discount, dealId, influencerStripeUserId, merchantStripeUserId) {
-      dispatch(actionCreator.init(discount, dealId, influencerStripeUserId, merchantStripeUserId));
+    dispatchInit(...params) {
+      dispatch(actionCreator.init(...params));
     },
 
     dispatchSetBillAmountString(billAmountString) {

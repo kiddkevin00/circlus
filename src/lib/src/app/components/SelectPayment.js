@@ -96,7 +96,7 @@ class SelectPayment extends Component {
   }
 
   _handleSelectPyment = (paymentSource) => {
-    Alert.alert('Info', `Selected Payment source: ${paymentSource}`);
+    Alert.alert('Info', `Selected Payment source:\n ${paymentSource.brand} ending in ${paymentSource.last4}`);
   }
 
   render() {

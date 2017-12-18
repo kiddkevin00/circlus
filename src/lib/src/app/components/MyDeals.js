@@ -66,6 +66,7 @@ class MyDeals extends Component {
             component: BillingSummary,
             passProps: {
               dealId: deal._id,
+              dealName: deal.name,
               influencerStripeUserId: deal.influencerStripeUserId,
               merchantStripeUserId: deal.merchantStripeUserId,
               discount: deal.discount.value,
@@ -112,6 +113,7 @@ class MyDeals extends Component {
                   component: BillingSummary,
                   passProps: {
                     dealId: deal._id,
+                    dealName: deal.name,
                     influencerStripeUserId: deal.influencerStripeUserId,
                     merchantStripeUserId: deal.merchantStripeUserId,
                     discount: deal.discount.value,
@@ -174,8 +176,8 @@ class MyDeals extends Component {
               <Text>Share</Text>
             </Button>
             <Button vertical onPress={ () => {} }>
-              <Icon name="cash" />
-              <Text>Billing</Text>
+              <Icon name="people" />
+              <Text>Social</Text>
             </Button>
             <Button vertical onPress={ () => this.props.navigator.replace({ component: Profile }) }>
               <Icon name="contact" />

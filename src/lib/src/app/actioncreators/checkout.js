@@ -1,9 +1,7 @@
+import asyncStorageActionCreator from './asyncStorage';
 import actionTypes from '../actiontypes/';
 import HttpProxy from '../proxies/HttpProxy';
 import StandardResponseWrapper from '../utils/StandardResponseWrapper';
-import {
-  AsyncStorage,
-} from 'react-native';
 
 
 const checkoutActionCreator = {
@@ -22,7 +20,7 @@ const checkoutActionCreator = {
         if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {
           const customerId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.customerId;
 
-          await AsyncStorage.setItem('@LocalDatabase:customerId', customerId);
+          await asyncStorageActionCreator.setItem('@LocalDatabase:customerId', customerId);
 
           dispatch({
             type: actionTypes.CHECKOUT.CHECKOUT_SUCCESS,

@@ -1,7 +1,7 @@
+import asyncStorageActionCreator from './asyncStorage';
 import actionTypes from '../actiontypes/';
 import {
   Share,
-  AsyncStorage,
 } from 'react-native';
 
 
@@ -13,7 +13,8 @@ const shareActionCreator = {
       });
 
       try {
-        const stripeUserId = await AsyncStorage.getItem('@LocalDatabase:stripeUserId');
+        const stripeUserId = await asyncStorageActionCreator
+          .getItem('@LocalDatabase:stripeUserId')(() => {});
 
         if (!stripeUserId) {
           throw new Error('Missing your bank account information.');
@@ -22,7 +23,9 @@ const shareActionCreator = {
         await Share.share({
           title: `Check out this deal - ${deal.name}`,
           message: `Check out this deal - ${deal.name}`,
-          url: `https://circlus.herokuapp.com/?deal=${global.encodeURIComponent(deal._id)}&influencer=${stripeUserId}&merchant=${deal.merchantStripeUserId}`,
+          url: `https://circlus.herokuapp.com/?deal=${global.encodeURIComponent(deal._id)}&` +
+            `influencer=${global.encodeURIComponent(stripeUserId)}&` +
+            `merchant=${global.encodeURIComponent(deal.merchantStripeUserId)}`,
         });
 
         dispatch({

@@ -1,9 +1,9 @@
 import auth from './auth';
 import profile from './profile';
 import login from './login';
-import myDeals from './myDeals';
 import checkout from './checkout';
 import billingSummary from './billingSummary';
+import asyncStorage from './asyncStorage';
 import { firebaseStateReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';
 
@@ -13,9 +13,9 @@ const rootReducer = combineReducers({
   auth,
   profile,
   login,
-  myDeals,
   checkout,
   billingSummary,
+  asyncStorage,
 });
 
 export { rootReducer as default };

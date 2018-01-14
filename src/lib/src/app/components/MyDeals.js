@@ -2,7 +2,7 @@ import DealDetail from './DealDetail';
 import BillingSummary from './BillingSummary';
 import Deals from './Deals';
 import Profile from './Profile';
-import actionCreator from '../actioncreators/myDeals';
+import asyncStorageActionCreator from '../actioncreators/asyncStorage';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
   Spinner,
@@ -38,7 +38,7 @@ import moment from 'moment';
 class MyDeals extends Component {
 
   static propTypes = {
-    dispatchFetchMyDeals: PropTypes.func.isRequired,
+    dispatchGetItemFromAsyncStorage: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     myDeals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 
@@ -48,7 +48,7 @@ class MyDeals extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatchFetchMyDeals()
+    this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true)
       .catch((err) => {
         Alert.alert('Try it again', err.message);
       });
@@ -193,8 +193,8 @@ class MyDeals extends Component {
 
 function mapStateToProps(state) {
   return {
-    isLoading: state.myDeals.isLoading,
-    myDeals: state.myDeals.myDeals,
+    isLoading: state.asyncStorage.isLoading,
+    myDeals: state.asyncStorage['@LocalDatabase:myDeals'],
     deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
       Array.isArray(state.firebase.ordered.nyc.deals)) ?
       state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
@@ -202,8 +202,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatchFetchMyDeals() {
-      return dispatch(actionCreator.fetchMyDeals());
+    dispatchGetItemFromAsyncStorage(...params) {
+      return dispatch(asyncStorageActionCreator.getItem(...params));
     },
   };
 }

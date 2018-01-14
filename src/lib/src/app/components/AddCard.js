@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 0,
-  }
+  },
 });
 
 class AddCard extends Component {

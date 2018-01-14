@@ -1,7 +1,7 @@
 import actionTypes from '../actiontypes/';
 
 
-const defaultErrorMsg = 'Something went wrong in Profile page';
+const defaultErrorMsg = 'Something went wrong in Profile page.';
 const initialState = {
   isLoading: false,
   error: {

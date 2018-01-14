@@ -508,6 +508,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1301CF1B2002A47F007EDD8E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				ABA173BA78BD4AD19F485588 /* libRCTFBSDK.a */,
+				FD872516584445CBAD3A62F2 /* libRNPhotoView.a */,
+				C1649C5BED474E0EAAAD614B /* libRNCardIO.a */,
+				B071C300EC624C44BCC5311E /* libTPSStripe.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		1310DEFE1F97B0B80053ECAA /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,6 +707,7 @@
 				6203285EC65A49FBA86EFF90 /* Resources */,
 				134E5A261F66EB4C00BAD441 /* Frameworks */,
 				6B8519B7CE8297937C8CEB7D /* Pods */,
+				1301CF1B2002A47F007EDD8E /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -815,7 +827,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = AL3QQKJ8WD;
+						DevelopmentTeam = C8GFR7K655;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
 								enabled = 1;
@@ -1452,9 +1465,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Circlus/Circlus.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = AL3QQKJ8WD;
+				DEVELOPMENT_TEAM = C8GFR7K655;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1479,8 +1493,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.circlus.consumer.main;
+				PRODUCT_BUNDLE_IDENTIFIER = inc.circlus.consumer.main;
 				PRODUCT_NAME = Circlus;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1492,8 +1507,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Circlus/Circlus.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = AL3QQKJ8WD;
+				DEVELOPMENT_TEAM = C8GFR7K655;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1518,8 +1534,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.circlus.consumer.main;
+				PRODUCT_BUNDLE_IDENTIFIER = inc.circlus.consumer.main;
 				PRODUCT_NAME = Circlus;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

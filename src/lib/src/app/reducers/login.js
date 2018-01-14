@@ -1,7 +1,7 @@
 import actionTypes from '../actiontypes/';
 
 
-const defaultErrorMsg = 'Something went wrong in Login page';
+const defaultErrorMsg = 'Something went wrong in Login page.';
 const initialState = {
   isLoading: false,
   error: {

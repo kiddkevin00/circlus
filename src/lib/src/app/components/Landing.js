@@ -2,14 +2,14 @@ import DealDetail from './DealDetail';
 import MyDeals from './MyDeals';
 import Profile from './Profile';
 import Login from './Login';
-import HttpProxy from '../proxies/HttpProxy';
-import StandardResponseWrapper from '../utils/StandardResponseWrapper';
+import actionCreator from '../actioncreators/landing';
+import asyncStorageActionCreator from '../actioncreators/asyncStorage';
 import { Toast } from 'native-base';
 import {
   Linking,
-  AsyncStorage,
   Alert,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
@@ -18,6 +18,10 @@ import qs from 'qs';
 class Landing extends Component {
 
   static propTypes = {
+    dispatchGetItemFromAsyncStorage: PropTypes.func.isRequired,
+    dispatchSetItemFromAsyncStorage: PropTypes.func.isRequired,
+    dispatchHandleBankAccountSetup: PropTypes.func.isRequired,
+
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
@@ -25,15 +29,14 @@ class Landing extends Component {
     Linking.getInitialURL()
       .then((url) => {
         if (url) {
-          this._handleOpenFromURL({ url });
-        } else {
-          this.props.navigator.replace({
-            component: Login,
-          });
+          return this._handleOpenFromURL({ url });
         }
+        return this.props.navigator.replace({
+          component: Login,
+        });
       })
       .catch((err) => setTimeout(() => {
-        Alert.alert('Try it again', `Getting launch URL failed.\n${err.message}`);
+        Alert.alert('Try it again', `URL deep linking failed.\n${err.message}`);
       }, 500));
 
     Linking.addEventListener('url', this._handleOpenFromURL);
@@ -48,8 +51,8 @@ class Landing extends Component {
     const path = url[0];
     const params = url[1] ? qs.parse(url[1]) : null;
 
-    if (path) {
-      if (params && params.deal) {
+    if (path && params) {
+      if (params.deal) {
         await this._handleNewDeal(params.deal, params.influencer, params.merchant);
 
         this.props.navigator.replace({
@@ -71,30 +74,23 @@ class Landing extends Component {
           buttonText: 'Dismiss',
           duration: 3000,
         });
-      } else if (params && (params.code || params.error)) {
+        return;
+      } else if (params.code || params.error) {
         await this._handleBankAccountSetup(params.error, params.code, params);
 
         this.props.navigator.replace({
           component: Profile,
         });
-      } else {
-        this.props.navigator.replace({
-          component: MyDeals,
-        });
+        return;
       }
     }
+    this.props.navigator.replace({
+      component: MyDeals,
+    });
   }
 
-  // [TODO] Use action creator instead.
   _handleNewDeal = async (dealId, influencerStripeUserId, merchantStripeUserId) => {
-    const myDealsString = await AsyncStorage.getItem('@LocalDatabase:myDeals');
-    let myDeals;
-
-    if (myDealsString) {
-      myDeals = JSON.parse(myDealsString);
-    } else {
-      myDeals = [];
-    }
+    const myDeals = await this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true);
 
     if (!myDeals.find((myDeal) => myDeal.dealId === dealId)) {
       myDeals.unshift({
@@ -103,40 +99,51 @@ class Landing extends Component {
         merchantStripeUserId,
         dateAdded: new Date().valueOf(),
       });
+      await this.props.dispatchSetItemFromAsyncStorage('@LocalDatabase:myDeals', myDeals);
     }
-
-    await AsyncStorage.setItem('@LocalDatabase:myDeals', JSON.stringify(myDeals));
   }
 
-  // [TODO] Use action creator instead.
   _handleBankAccountSetup = async (error, authorizationCode, params) => {
     if (error) {
       setTimeout(() => Alert.alert('Try it again', `Something went wrong.\n${global.decodeURIComponent(params.error_description || error)}`), 500);
       return;
     }
 
-    const httpClient = HttpProxy.createInstance();
-
     try {
-      const requesyBody = { authorizationCode };
-      const { data } = await httpClient.post('/bank-account/setup', requesyBody);
+      const stripeUserId = await this.props.dispatchHandleBankAccountSetup(authorizationCode);
 
-      if (StandardResponseWrapper.verifyFormat(data) && StandardResponseWrapper.deserialize(data).getNthData(0).success) {
-        const stripeUserId = StandardResponseWrapper.deserialize(data).getNthData(0).detail.stripeUserId;
-
-        await AsyncStorage.setItem('@LocalDatabase:stripeUserId', stripeUserId);
-      } else {
-        setTimeout(() => Alert.alert('Try it again', `Invalid response received from server.\n${JSON.stringify(data, null, 2)}`, 500));
-      }
+      await this.props.dispatchSetItemFromAsyncStorage('@LocalDatabase:stripeUserId', stripeUserId);
     } catch (err) {
-      setTimeout(() => Alert.alert('Try it again', `Processing payment fails.\n${err.message}`), 500);
+      setTimeout(() => {
+        Alert.alert('Try it again', err.message);
+      }, 500);
     }
   }
 
   render() {
+    // [TODO] Should be a loading page.
     return null;
   }
 
 }
 
-export { Landing as default };
+function mapStateToProps(state) {
+  return {};
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatchGetItemFromAsyncStorage(...params) {
+      return dispatch(asyncStorageActionCreator.getItem(...params));
+    },
+
+    dispatchSetItemFromAsyncStorage(key, item) {
+      return dispatch(asyncStorageActionCreator.setItem(key, item));
+    },
+
+    dispatchHandleBankAccountSetup(authorizationCode) {
+      return dispatch(actionCreator.handleBankAccountSetup(authorizationCode));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

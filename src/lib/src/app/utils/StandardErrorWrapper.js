@@ -50,13 +50,15 @@ class StandardErrorWrapper {
       const errMsg = initialErr.toString() !== '[object Object]' ?
         initialErr.toString() : JSON.stringify(initialErr, null, 2);
 
-      this[errorContext].errorStack = [{
-        code: constants.SYSTEM.ERROR_CODES.UNKNOWN_ERROR,
-        name: constants.SYSTEM.ERROR_NAMES.UNKNOWN_ERROR,
-        source: constants.SYSTEM.COMMON.CURRENT_SOURCE,
-        message: errMsg,
-        detail: initialErr,
-      }];
+      this[errorContext].errorStack = [
+        {
+          code: constants.SYSTEM.ERROR_CODES.UNKNOWN_ERROR,
+          name: constants.SYSTEM.ERROR_NAMES.UNKNOWN_ERROR,
+          source: constants.SYSTEM.COMMON.CURRENT_SOURCE,
+          message: errMsg,
+          detail: initialErr,
+        },
+      ];
     } else {
       // If there is no initial error provided, default to an empty array.
       this[errorContext].errorStack = [];

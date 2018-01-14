@@ -1,20 +1,22 @@
 import authActionTypes from '../actiontypes/auth';
 import loginActionTypes from '../actiontypes/login';
 import profileActionTypes from '../actiontypes/profile';
-import myDealsActionTypes from '../actiontypes/myDeals';
 import checkoutActionTypes from '../actiontypes/checkout';
 import billingSummaryActionTypes from '../actiontypes/billingSummary';
+import landingActionTypes from '../actiontypes/landing';
 import shareActionTypes from '../actiontypes/share';
+import asyncStorageActionTypes from '../actiontypes/asyncStorage';
 
 
 const allActionTypesPerSection = {
   AUTH: authActionTypes,
   PROFILE: profileActionTypes,
   LOGIN: loginActionTypes,
-  MY_DEALS: myDealsActionTypes,
   CHECKOUT: checkoutActionTypes,
   BILLING_SUMMARY: billingSummaryActionTypes,
+  LANDING: landingActionTypes,
   SHARE: shareActionTypes,
+  ASYNC_STORAGE: asyncStorageActionTypes,
 };
 
 namespaceActionTypesPerSection(allActionTypesPerSection);

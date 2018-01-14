@@ -18,7 +18,7 @@ const asyncStorageActionCreator = {
 
         dispatch({
           type: actionTypes.ASYNC_STORAGE.GET_ITEM_SUCCESS,
-          payload: { item, key },
+          payload: { key, item },
         });
 
         return item;

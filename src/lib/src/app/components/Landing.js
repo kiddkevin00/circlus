@@ -90,7 +90,7 @@ class Landing extends Component {
   }
 
   _handleNewDeal = async (dealId, influencerStripeUserId, merchantStripeUserId) => {
-    const myDeals = await this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true);
+    const myDeals = await this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true, []);
 
     if (!myDeals.find((myDeal) => myDeal.dealId === dealId)) {
       myDeals.unshift({

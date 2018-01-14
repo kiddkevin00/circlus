@@ -48,7 +48,7 @@ class MyDeals extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true)
+    this.props.dispatchGetItemFromAsyncStorage('@LocalDatabase:myDeals', true, [])
       .catch((err) => {
         Alert.alert('Try it again', err.message);
       });

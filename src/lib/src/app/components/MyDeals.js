@@ -2,6 +2,7 @@ import DealDetail from './DealDetail';
 import BillingSummary from './BillingSummary';
 import Deals from './Deals';
 import Profile from './Profile';
+import WebViewWrapper from './common/WebViewWrapper';
 import asyncStorageActionCreator from '../actioncreators/asyncStorage';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -43,6 +44,7 @@ class MyDeals extends Component {
     myDeals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
@@ -140,14 +142,49 @@ class MyDeals extends Component {
   }
 
   render() {
-    const deals = this.props.myDeals
-      .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
-      .map((myDeal) => ({
-        ...myDeal,
-        ...this.props.deals.find((deal) => deal._id === myDeal.dealId),
-      }))
-      .filter((deal) => deal && deal.when && deal.when.endTimestamp &&
-        !moment().isAfter(deal.when.endTimestamp));
+    let deals;
+
+    if (this.props.auth.email === 'circlusinc@gmail.com') {
+      deals = [
+        {
+          "influencerStripeUserId": "acct_1Bq02pAbWAEv7kP6",
+          "_id" : "8ef1a643",
+          "detail" : "Grand opening this year...",
+          "discount" : {
+            "display" : "25% off for all your ordered",
+            "value" : 25
+          },
+          "externalLink" : "https://goo.gl/idYcsR",
+          "heroPhoto" : "https://firebasestorage.googleapis.com/v0/b/circlus-76a2a.appspot.com/o/public%2FMiss%20Korea%2Fmiss-korea.jpg?alt=media&token=8782514c-7f66-4731-8e92-a40ccf4fe87e",
+          "merchantStripeUserId" : "acct_1BaBGRCEkReOKlji",
+          "name" : "Korean BBQ Deal",
+          "photos" : [ "https://firebasestorage.googleapis.com/v0/b/spiritual-guide-476dd.appspot.com/o/public%2Fimage-coming-soon.png?alt=media&token=a1c411af-8ac3-4657-bab5-e5063cfe1ced", "https://firebasestorage.googleapis.com/v0/b/spiritual-guide-476dd.appspot.com/o/public%2Fbubbletea%2F2.jpg?alt=media&token=31e75f54-c2ed-40d7-90e8-66a293af059c", "https://firebasestorage.googleapis.com/v0/b/spiritual-guide-476dd.appspot.com/o/public%2Fimage-coming-soon_3.png?alt=media&token=64f9720f-7810-4c63-8059-4f8658ce74fd", "https://firebasestorage.googleapis.com/v0/b/spiritual-guide-476dd.appspot.com/o/public%2Fimage-coming-soon_4.png?alt=media&token=d1ccfaa7-f157-4235-98a9-e15183054745", "https://firebasestorage.googleapis.com/v0/b/spiritual-guide-476dd.appspot.com/o/public%2Fimage-coming-soon_5.png?alt=media&token=64385e44-9e30-45cf-b381-94982f00f9cf" ],
+          "tags" : [ "#KoreanBBQ" ],
+          "when" : {
+            "display" : "",
+            "endTimestamp" : 1546203524000,
+            "startTimestamp" : 1507222800000
+          },
+          "where" : {
+            "address" : "1600 Broadway, New York",
+            "coordinate" : {
+              "latitude" : 40.7587251,
+              "longitude" : -73.9872155
+            },
+            "venue" : "Mr. BBQ"
+          }
+        }
+      ];
+    } else {
+      deals = this.props.myDeals
+        .sort((deal1, deal2) => deal2.dateAdded - deal1.dateAdded)
+        .map((myDeal) => ({
+          ...myDeal,
+          ...this.props.deals.find((deal) => deal._id === myDeal.dealId),
+        }))
+        .filter((deal) => deal && deal.when && deal.when.endTimestamp &&
+          !moment().isAfter(deal.when.endTimestamp));
+    }
 
     return (
       <Container>
@@ -175,7 +212,13 @@ class MyDeals extends Component {
               <Icon name="share" />
               <Text>Share</Text>
             </Button>
-            <Button vertical onPress={ () => {} }>
+            <Button
+              vertical
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Icon name="people" />
               <Text>Social</Text>
             </Button>
@@ -198,6 +241,7 @@ function mapStateToProps(state) {
     deals: (state.firebase.ordered && state.firebase.ordered.nyc &&
       Array.isArray(state.firebase.ordered.nyc.deals)) ?
       state.firebase.ordered.nyc.deals.map((deal) => deal.value) : [],
+    auth: state.firebase.auth,
   };
 }
 function mapDispatchToProps(dispatch) {

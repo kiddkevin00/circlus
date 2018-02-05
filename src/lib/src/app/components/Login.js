@@ -1,6 +1,7 @@
 import MyDeals from './MyDeals';
 import Deals from './Deals';
 import Profile from './Profile';
+import WebViewWrapper from './common/WebViewWrapper';
 import actionCreator from '../actioncreators/login';
 import Swiper from 'react-native-swiper';
 import { firebaseConnect } from 'react-redux-firebase';
@@ -122,9 +123,15 @@ class Login extends Component {
               <Icon name="share" />
               <Text>Share</Text>
             </Button>
-            <Button vertical onPress={ () => {} }>
-              <Icon name="cash" />
-              <Text>Billing</Text>
+            <Button
+              vertical
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
+              <Icon name="people" />
+              <Text>Social</Text>
             </Button>
             <Button vertical onPress={ () => this.props.navigator.replace({ component: Profile }) }>
               <Icon name="contact" />

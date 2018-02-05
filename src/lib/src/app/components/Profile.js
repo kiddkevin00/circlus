@@ -1,6 +1,7 @@
 import MyDeals from './MyDeals';
 import Deals from './Deals';
 import SelectPayment from './SelectPayment';
+import WebViewWrapper from './common/WebViewWrapper';
 import actionCreator from '../actioncreators/profile';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -92,7 +93,7 @@ class Profile extends Component {
             <ListItem itemDivider>
               <Text>Account</Text>
             </ListItem>
-            <ListItem icon button onPress={ this._handleAuthentication }>
+            <ListItem last icon button onPress={ this._handleAuthentication }>
               <Left>
                 <Icon active name="logo-facebook" />
               </Left>
@@ -103,6 +104,7 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            {/*
             <ListItem last icon>
               <Left>
                 <Icon active name="contacts" />
@@ -114,6 +116,8 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            */}
+            {/*
             <ListItem itemDivider>
               <Text>Billing</Text>
             </ListItem>
@@ -128,10 +132,18 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
+            */}
             <ListItem itemDivider>
               <Text>Support</Text>
             </ListItem>
-            <ListItem icon>
+            <ListItem
+              icon
+              button
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Left>
                 <Icon active name="settings" />
               </Left>
@@ -142,7 +154,14 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem icon>
+            <ListItem
+              icon
+              button
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Left>
                 <Icon active name="call" />
               </Left>
@@ -153,7 +172,15 @@ class Profile extends Component {
                 <Icon name="arrow-forward" />
               </Right>
             </ListItem>
-            <ListItem last icon>
+            <ListItem
+              last
+              icon
+              button
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Left>
                 <Icon active name="information-circle" />
               </Left>
@@ -193,7 +220,13 @@ class Profile extends Component {
               <Icon name="share" />
               <Text>Share</Text>
             </Button>
-            <Button vertical onPress={ () => {} }>
+            <Button
+              vertical
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Icon name="people" />
               <Text>Social</Text>
             </Button>

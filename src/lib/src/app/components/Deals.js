@@ -1,6 +1,7 @@
 import DealDetail from './DealDetail';
 import MyDeals from './MyDeals';
 import Profile from './Profile';
+import WebViewWrapper from './common/WebViewWrapper';
 import shareActionCreator from '../actioncreators/share';
 import { firebaseConnect } from 'react-redux-firebase';
 import {
@@ -42,7 +43,7 @@ class Deals extends Component {
 
     influencers: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
     deals: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    auth: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
     navigator: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
@@ -162,7 +163,7 @@ class Deals extends Component {
               <Button
                 iconLeft
                 transparent
-                onPress={ () => {} }
+                onPress={ () => Alert.alert('Action Required', 'Please send your social media handle to circlusinc@gmail.com. We will contact you shortly.') }
               >
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="unlock" />
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>Sign Up</Text>
@@ -171,7 +172,10 @@ class Deals extends Component {
               <Button
                 iconLeft
                 transparent
-                onPress={ () => {} }
+                onPress={ () => this.props.navigator.push({
+                  component: WebViewWrapper,
+                  passProps: { url: 'https://www.circlus.us/' },
+                }) }
               >
                 <Icon style={ { fontSize: 22, color: '#6699ff' } } name="information-circle" />
                 <Text style={ { fontSize: 15, fontWeight: '700', color: '#6699ff' } }>More Info</Text>
@@ -215,7 +219,13 @@ class Deals extends Component {
               <Icon active name="share" />
               <Text>Share</Text>
             </Button>
-            <Button vertical onPress={ () => {} }>
+            <Button
+              vertical
+              onPress={ () => this.props.navigator.push({
+                component: WebViewWrapper,
+                passProps: { url: 'https://www.circlus.us/' },
+              }) }
+            >
               <Icon name="people" />
               <Text>Social</Text>
             </Button>

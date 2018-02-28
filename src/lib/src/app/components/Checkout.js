@@ -151,9 +151,15 @@ class Checkout extends Component {
             expiryErrorMessage=""
             cvcErrorMessage=""
           />
-          <Button style={ { borderColor: '#3F5EFB' } } transparent full onPress={ this._handleApplePay }>
+          {/*
+          <Button
+            transparent
+            full
+            style={ { borderColor: '#3F5EFB' } }
+            onPress={ this._handleApplePay }>
             <Text style={ { color: '#3F5EFB' } }>or pay with Apple Pay</Text>
           </Button>
+          */}
         </Content>
       </Container>
     );

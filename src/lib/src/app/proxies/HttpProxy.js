@@ -6,18 +6,15 @@ const throwErrorWithCodeAndMsg = ({ code, message }) => {
 
   error.code = code;
 
-  throw error;
+  return error;
 };
 const getErrorCodeAndMsg = (errors) => ({
-  code: (Array.isArray(errors) && errors[0] && errors[0].code) ||
-    'UNKNOWN_ERROR',
+  code: (Array.isArray(errors) && errors[0] && errors[0].code) || 'UNKNOWN_ERROR',
   message: (Array.isArray(errors) && errors[0] && errors[0].message) ||
     'Something went wrong while making HTTP requests.',
 });
-const extractErrorListFromResponse = (error) => (
-  (error.response && error.response.data) ?
-    (error.response.data.result && error.response.data.result.data) : error
-);
+const extractErrorListFromResponse = (error) =>
+  (error.response && error.response.data && error.response.data.result && error.response.data.result.data) || [error];
 const handleError = (error) => {
   if (Array.isArray(global.currentErrorStack)) {
     global.currentErrorStack.unshift(error);

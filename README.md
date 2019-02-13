@@ -26,12 +26,12 @@ The following steps assume that you are developing on Mac.
   - Create file in "$HOME/.gradle/gradle.properties" and add `REACT_NATIVE_PACKAGER_PORT = 8085` to it.
 
 ## Run on iOS
-  - `cd spiritual-guide`
+  - `cd circlus/`
   - `react-native start`
   - `react-native run-ios`
 
 ## Run on Android
-  - `cd spiritual-guide`
+  - `cd circlus/`
   - `react-native start`
   - `npm run map-adb-ports;` [8097 (Nuclide/Atom)](https://github.com/facebook/nuclide/issues/408)
   - `react-native run-android`
